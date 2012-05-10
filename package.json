@@ -14,6 +14,10 @@
     "flatiron": "~0.1.9"
   },
   "devDependencies": {
+    "api-easy": "0.3.x",
+    "node_hash": "0.2.x",
+    "director": "1.0.x",
+    "resourceful": "0.1.x",
     "flatiron": "~0.1.9",
     "vows": "0.6.x"
   },
