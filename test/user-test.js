@@ -30,6 +30,7 @@ vows.describe('http-users/user').addBatch({
         assert.equal(user.username, 'charlie');
         // using default options not require ativation so
         assert.equal(user.state, 'active');
+        charlie = user;
       }
     },
     "the available() method": {
@@ -88,11 +89,25 @@ vows.describe('http-users/user').addBatch({
     }
   }
   **/
-})/**.addBatch({
+}).addBatch({
+  "The User resource": {
+    "the addKey() method": {
+      topic: function () {
+        charlie.addKey('test-key', key, this.callback);
+      },
+      "should respond correctly": function (err, res) {
+        assert.isNull(err);
+        assert.isObject(res);
+        assert.ok(res.ok);
+        assert.equal(res.headers.status, 201);
+      }
+    }
+  }
+}).addBatch({
   "The User resource": {
     "the getKey() method": {
       topic: function () {
-        charlie.getKey(this.callback);
+        charlie.getKey('test-key', this.callback);
       },
       "should respond with the correct attachment": function (err, data) {
         assert.isNull(err);
@@ -106,7 +121,7 @@ vows.describe('http-users/user').addBatch({
       "should respond with all users": function (err, users) {
         assert.isNull(err);
         assert.isArray(users);
-        assert.lengthOf(users, 4);
+        assert.lengthOf(users, 2);
       }
     }
   }
@@ -133,4 +148,4 @@ vows.describe('http-users/user').addBatch({
       }
     }
   }
-})**/.export(module);
+}).export(module);
