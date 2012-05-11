@@ -13,12 +13,16 @@
   "peerDependencies": {
     "flatiron": "~0.1.9"
   },
+  "dependencies": {
+    "async": "0.1.x"
+  },
   "devDependencies": {
     "api-easy": "0.3.x",
     "node_hash": "0.2.x",
     "director": "1.0.x",
     "resourceful": "0.1.x",
     "flatiron": "~0.1.9",
+    "union": "0.3.x",
     "vows": "0.6.x"
   },
   "main": "./lib/http-users",
