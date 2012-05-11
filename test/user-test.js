@@ -8,15 +8,12 @@
 var assert = require('assert'),
     path = require('path'),
     vows = require('vows'),
-    app = require('./fixtures/app'),
-    helpers = require('../../helpers');
+    app = require('./fixtures/app');
 
 var key = '012345678901234567890123456789',
     charlie;
 
-vows.describe('http-users/user').addBatch(
-  helpers.macros.requireResources({ env: 'development' }, 'user')
-).addBatch({
+vows.describe('http-users/user').addBatch({
   "The User resource": {
     "the create() method": {
       topic: function () {
@@ -28,26 +25,70 @@ vows.describe('http-users/user').addBatch(
       },
       "should respond with the appropriate object": function (err, user) {
         assert.isNull(err);
-        //
-        // TODO: Assert user
-        //
-      },
-      "the updateKey() method": {
-        "without a name": {
-          topic: function (user) {
-            charlie = user;
-            user.updateKey(key, this.callback);
-          },
-          "should add the attachment correctly": function (err, res) {
-            assert.isNull(err);
-            assert.isObject(res.headers);
-            assert.equal(res.headers.status, 201);
-          }
+        assert.isObject(user);
+        assert.equal(user.email, 'foo@bar.com');
+        assert.equal(user.username, 'charlie');
+        // using default options not require ativation so
+        assert.equal(user.state, 'active');
+      }
+    },
+    "the available() method": {
+      "with an unused name": {
+        topic: function () {
+          app.resources.User.available('daniel', this.callback);
+        },
+        "should respond available": function (err, res) {
+          assert.isNull(err);
+          assert.ok(res);
         }
-      }      
+      },
+      "with an used name": {
+        topic: function () {
+          var self = this;
+          app.resources.User.create({
+            _id: 'juan',
+            password: '1234',
+            email: 'foo@bar.com'
+          }, function () {
+            app.resources.User.available('juan', self.callback);
+          })
+        },
+        "should said unavailable": function (err, res) {
+          assert.isNull(err);
+          assert.isFalse(res);
+        }
+      }
     }
   }
 }).addBatch({
+  /** THIS STILL NOT WORK
+  "The User resource": {
+    "the create() method setting require activation": {
+      topic: function () {
+        console.log(app.async);
+        app.on('init', function () {
+          app.config.set('users:require-activation', true);
+        });
+        app.resources.User.create({
+          _id: 'Waiter',
+          password: '1234',
+          email:'waitfor@activate.com'
+        }, this.callback);
+      },
+      "should respond with the appropriate state": function (err, user) {
+        assert.isNull(err);
+        assert.isObject(user);
+        assert.equal(user.email, 'waitfor@activate.com');
+        assert.equal(user.username, 'Waiter');
+        // using default options not require ativation so
+        assert.equal(user.state, 'new');
+        console.log(typeof user.inviteCode);
+        console.log(user.inviteCode);
+      }
+    }
+  }
+  **/
+})/**.addBatch({
   "The User resource": {
     "the getKey() method": {
       topic: function () {
@@ -92,4 +133,4 @@ vows.describe('http-users/user').addBatch(
       }
     }
   }
-}).export(module);
+})**/.export(module);

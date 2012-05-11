@@ -82,5 +82,4 @@ app.on('init', function () {
   resourceful.autoMigrate = true;
 });
 
-
 app.start(8080);
