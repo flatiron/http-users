@@ -62,34 +62,6 @@ vows.describe('http-users/user').addBatch({
     }
   }
 }).addBatch({
-  /** THIS STILL NOT WORK
-  "The User resource": {
-    "the create() method setting require activation": {
-      topic: function () {
-        console.log(app.async);
-        app.on('init', function () {
-          app.config.set('users:require-activation', true);
-        });
-        app.resources.User.create({
-          _id: 'Waiter',
-          password: '1234',
-          email:'waitfor@activate.com'
-        }, this.callback);
-      },
-      "should respond with the appropriate state": function (err, user) {
-        assert.isNull(err);
-        assert.isObject(user);
-        assert.equal(user.email, 'waitfor@activate.com');
-        assert.equal(user.username, 'Waiter');
-        // using default options not require ativation so
-        assert.equal(user.state, 'new');
-        console.log(typeof user.inviteCode);
-        console.log(user.inviteCode);
-      }
-    }
-  }
-  **/
-}).addBatch({
   "The User resource": {
     "the addKey() method": {
       topic: function () {
@@ -100,6 +72,28 @@ vows.describe('http-users/user').addBatch({
         assert.isObject(res);
         assert.ok(res.ok);
         assert.equal(res.headers.status, 201);
+      }
+    }
+  }
+}).addBatch({
+  "The User resource": {
+    topic: function () {
+      app.resources.User.get('user/juan', this.callback);
+    },
+    "with a key": {
+      topic: function (user) {
+        user.addKey('update', key, this.callback);
+      },
+      "then test the updateKey() method": {
+        topic: function (res, user) {
+          user.updateKey('update', '987654321098765432109876543210', this.callback);
+        },
+        "should update the key": function (err, response) {
+          assert.isNull(err);
+          assert.isObject(response);
+          assert.ok(response.ok);
+          assert.equal(response.headers.status, 201);
+        }
       }
     }
   }
@@ -144,7 +138,7 @@ vows.describe('http-users/user').addBatch({
       "should respond with all keys for all users": function (err, keys) {
         assert.isNull(err);
         assert.isArray(keys);
-        assert.equal(keys[0], key);
+        assert.equal(keys[1], key);
       }
     }
   }
