@@ -150,7 +150,9 @@ vows.describe('http-users/user').addBatch({
       },
       "should respond with a 'shake'": function (err, user) {
         assert.isNull(err);
-        console.log('U', user);
+        assert.isObject(user);
+        assert.equal(user.username, 'juan');
+        assert.ok(user.shake);
       }
     }
   }
