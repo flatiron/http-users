@@ -142,4 +142,16 @@ vows.describe('http-users/user').addBatch({
       }
     }
   }
+}).addBatch({
+  "The User resource": {
+    "the forgot() method": {
+      topic: function () {
+        app.resources.User.forgot('juan', { sendEmail: false }, this.callback);
+      },
+      "should respond with a 'shake'": function (err, user) {
+        assert.isNull(err);
+        console.log('U', user);
+      }
+    }
+  }
 }).export(module);
