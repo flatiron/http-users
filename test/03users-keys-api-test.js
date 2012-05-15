@@ -5,18 +5,18 @@
  *
  */
 
-var assert = require('assert'),
+var assert  = require('assert'),
     apiEasy = require('api-easy'),
-    helpers = require('../../helpers');
+    app     = require('./fixtures/app'),
+    base64  = require('flatiron').common.base64;
     
 var key = '0987654321abcdefghijklmnop0987654321abcdefghijklmnop0987654321abcdefghijklmnop',
-    port = 9002;
+    port = 8080;
 
-var suite = apiEasy.describe('http-users/user/api/keys').addBatch(
-  helpers.macros.requireProvisioner(port)
-);
-
-helpers.testApi(suite, port)
+apiEasy.describe('http-users/user/api/keys')
+  .use('localhost', port)
+  .setHeader('content-type', 'application/json')
+  .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
   .get('/keys/charlie/publicKey')
     .expect(200)
     .expect('should respond with the specified key', function (err, res, body) {
@@ -44,6 +44,5 @@ helpers.testApi(suite, port)
       assert.isArray(result.keys);
       assert.lengthOf(result.keys, 1);
       assert.equal(result.keys[0], key);
-    });
-    
-suite.export(module);
+    })
+.export(module);
