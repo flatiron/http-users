@@ -7,15 +7,13 @@
 
 var assert = require('assert'),
     apiEasy = require('api-easy'),
-    helpers = require('../../helpers');
+    app = require('./fixtures/app');
     
-var port = 9002;
+var port = 8080;
 
-var suite = apiEasy.describe('http-users/user/api/unauthorized').addBatch(
-  helpers.macros.requireProvisioner(port)
-);
 
-suite.use('localhost', port)
+apiEasy.describe('http-users/user/api/unauthorized')
+  .use('localhost', port)
   .setHeader('content-type', 'application/json')
   .setHeader('authorization', 'Basic WTFFFUUUU==')
   .get('/auth')
@@ -26,6 +24,5 @@ suite.use('localhost', port)
       var result = JSON.parse(body); 
       assert.isObject(result);
       assert.isArray(result.keys);
-    });
-    
-suite.export(module);
+    })
+.export(module);
