@@ -15,7 +15,7 @@ var key = '0987654321abcdefghijklmnop0987654321abcdefghijklmnop0987654321abcdefg
 
 apiEasy.describe('http-users/user/api/keys')
   .use('localhost', port)
-  .setHeader('content-type', 'application/json')
+  .setHeader('Content-Type', 'application/json')
   .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
   .get('/keys/charlie/publicKey')
     .expect(200)
@@ -32,7 +32,7 @@ apiEasy.describe('http-users/user/api/keys')
       assert.isArray(result.keys);
       assert.lengthOf(result.keys, 1);
     })
-  .next()  
+  .next()
   .post('/keys/devjitsu', { key: key })
     .expect(201)
   .next()
