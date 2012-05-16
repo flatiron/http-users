@@ -8,7 +8,7 @@
 var director = require('director'),
     flatiron = require('flatiron'),
     resourceful = require('resourceful'),
-    httpUsers = require('../../lib/http-users');
+    httpUsers = require('../../../lib/http-users');
 
 var app = module.exports = flatiron.app;
 

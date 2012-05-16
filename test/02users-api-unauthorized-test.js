@@ -7,7 +7,7 @@
 
 var assert = require('assert'),
     apiEasy = require('api-easy'),
-    app = require('./fixtures/app');
+    app = require('./fixtures/app/couchdb');
     
 var port = 8080;
 

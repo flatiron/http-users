@@ -8,7 +8,7 @@
 var assert = require('assert'),
     apiEasy = require('api-easy'),
     base64  = require('flatiron').common.base64,
-    app     = require('./fixtures/app');
+    app     = require('./fixtures/app/couchdb');
     
 var port = 8080;
 
