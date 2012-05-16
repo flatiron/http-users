@@ -13,7 +13,36 @@ var assert = require('assert'),
 var key = '012345678901234567890123456789',
     charlie;
 
+
+//
+// Use nano to help bootstrap couch for testing
+//
+var nano = require('nano')('http://localhost:5984');
+
 vows.describe('http-users/user').addBatch({
+  "Setting up the tests": {
+    "clearing the couch database" : {
+      topic: function(){
+        nano.db.destroy(app.database.database, this.callback)
+      },
+      "should not throw" : function(err, result){
+        assert(true);
+      }
+    }
+  }
+}).addBatch({
+  "Setting up the tests": {
+    "creating the couch database" : {
+      topic: function() {
+        nano.db.create(app.database.database, this.callback)
+      },
+      "should create database" : function(err, result){
+        assert.isNull(err);
+        console.log(result)
+      }
+    }
+  }
+}).addBatch({
   "The User resource": {
     "the create() method": {
       topic: function () {

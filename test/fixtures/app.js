@@ -81,7 +81,8 @@ app.on('init', function () {
     port: 5984
   };
   
-  database.database = database.database || 'test';
+  database.database = database.database || 'flatiron-http-users';
+  app.database = database;
 
   resourceful.use('couchdb', database);
   resourceful.autoMigrate = true;
