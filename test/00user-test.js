@@ -15,7 +15,7 @@ var assert = require('assert'),
 var key = '012345678901234567890123456789',
     charlie;
 
-var suite = vows.describe('http-users/couchdb/user');
+var suite = vows.describe('http-users/couchdb/users');
 suite = helpers['user-resource-test'](suite, couchApp);
 //suite = helpers['user-resource-test'](suite, memoryApp);
 
