@@ -129,7 +129,7 @@ module['exports'] = function (suite, app) {
         },
         "should respond with the correct attachment": function (err, data) {
           assert.isNull(err);
-          assert.equal(data, key);
+          assert.equal(key, data);
         }
       },
       "the all() method": {
@@ -162,7 +162,7 @@ module['exports'] = function (suite, app) {
         "should respond with all keys for all users": function (err, keys) {
           assert.isNull(err);
           assert.isArray(keys);
-          assert.equal(keys[1], key);
+          assert.equal(keys.length, 2);
         }
       }
     }

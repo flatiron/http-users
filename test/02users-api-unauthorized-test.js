@@ -18,11 +18,6 @@ apiEasy.describe('http-users/user/api/unauthorized')
   .setHeader('authorization', 'Basic WTFFFUUUU==')
   .get('/auth')
     .expect(403)
-  .get('/keys')
-    .expect(200)
-    .expect('should respond with a list of keys', function (err, res, body) {
-      var result = JSON.parse(body); 
-      assert.isObject(result);
-      assert.isArray(result.keys);
-    })
+  .get('/users/charlie/keys')
+    .expect(403)
 .export(module);

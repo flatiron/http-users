@@ -17,14 +17,15 @@ apiEasy.describe('http-users/user/api/keys')
   .use('localhost', port)
   .setHeader('Content-Type', 'application/json')
   .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
-  .get('/keys/charlie/test-key')
+  .get('/users/charlie/keys/test-key')
     .expect(200)
     .expect('should respond with the specified key', function (err, res, body) {
       var result = JSON.parse(body); 
       assert.isObject(result);
-      assert.isString(result.key);
+      assert.isArray(result.keys);
+      assert.isString(result.keys[0]);
     })
-  .get('/keys/charlie')
+  .get('/users/charlie/keys')
     .expect(200)
     .expect('should respond with all keys for the user', function (err, res, body) {
       var result = JSON.parse(body); 
@@ -33,16 +34,15 @@ apiEasy.describe('http-users/user/api/keys')
       assert.lengthOf(result.keys, 1);
     })
   .next()
-  .post('/keys/devjitsu', { key: key })
+  .post('/users/devjitsu/keys', { key: key })
     .expect(201)
   .next()
-  .get('/keys/devjitsu')
+  .get('/users/devjitsu/keys')
     .expect(200)
     .expect('should respond with all keys for the user', function (err, res, body) {
       var result = JSON.parse(body); 
       assert.isObject(result);
       assert.isArray(result.keys);
-      assert.lengthOf(result.keys, 1);
-      assert.equal(result.keys[0], key);
+      assert.lengthOf(result.keys, 2);
     })
 .export(module);
