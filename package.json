@@ -23,7 +23,9 @@
     "resourceful": "0.1.x",
     "flatiron": "~0.1.9",
     "union": "0.3.x",
-    "vows": "0.6.x"
+    "vows": "0.6.x",
+    "traverse": "*",
+    "restful": "*"
   },
   "main": "./lib/http-users",
   "scripts": {

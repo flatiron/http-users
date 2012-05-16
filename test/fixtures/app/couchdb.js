@@ -7,6 +7,7 @@
  
 var director = require('director'),
     flatiron = require('flatiron'),
+    restful  = require('restful'),
     resourceful = require('resourceful'),
     httpUsers = require('../../../lib/http-users');
 
@@ -40,6 +41,7 @@ app.use(flatiron.plugins.http, {
   },
   before: [
     function (req, res) {
+
       function onError(err) {
         //
         // TODO: Something on `err.headers`
@@ -63,6 +65,40 @@ app.use(flatiron.plugins.http, {
 
 app.use(httpUsers);
 
+app.router.get('/', function(){
+  this.res.text(niceTable(app.router.routes));
+  this.res.end();
+})
+
+var traverse = require('traverse');
+
+
+//
+// TODO: Move this to director core?
+//
+function niceTable (routes) {
+
+  var niceRoutes = routes,
+      str = '', 
+      verbs = ['get', 'post', 'put', 'delete'];
+
+  traverse(niceRoutes).forEach(visitor);
+
+  function visitor () {
+    var path = this.path, 
+    pad = '';
+    if(path[path.length - 1] && verbs.indexOf(path[path.length - 1]) !== -1) {
+      pad += path.pop().toUpperCase();
+      for(var i = pad.length; i < 8; i++) {
+        pad += ' ';
+      }
+      path = path.join('/');
+      str += pad + '/' + path  + ' \n'
+    }
+  }
+  return str;
+}
+
 //
 // Expose the common part of flatiron
 //
@@ -78,14 +114,20 @@ app.on('init', function () {
   //
   var database = app.config.get('database') || {
     host: 'localhost',
-    port: 5984
+    port: 5984,
+    recurse: "forward"
   };
   
   database.database = database.database || 'flatiron-http-users';
-  app.database = database;
-
+  app.database = database
   resourceful.use('couchdb', database);
   resourceful.autoMigrate = true;
+  
 });
 
 app.start(8080);
+
+//
+// This will expose all resources as restful routers
+app.use(restful);
+console.log(app.router.routes)

@@ -24,7 +24,7 @@ apiEasy.describe('http-users/user/api')
       assert.isNull(error);
       assert.isTrue(result.authorized);
     })
-  .post('/users/devjitsu', { email: 'initial@email.com', password: '1234' })
+  .post('/user/devjitsu', { email: 'initial@email.com', password: '1234' })
     .expect(201)
     .expect('should respond with the user created', function (err, res, body) {
       var result = JSON.parse(body);
@@ -33,16 +33,16 @@ apiEasy.describe('http-users/user/api')
       assert.equal('devjitsu', result.username);
     })
   .next()
-  .get('/users')
+  .get('/user')
     .expect(200)
     .expect('should respond with a list of users', function (err, res, body) {
       var result = JSON.parse(body);
       assert.isNull(err);
       assert.isObject(result);
-      assert.isArray(result.users);
-      assert.lengthOf(result.users, 3);
+      assert.isArray(result.results);
+      assert.lengthOf(result.results, 3);
     })
-  .get('/users/devjitsu')
+  .get('/user/devjitsu')
     .expect(200)
     .expect('should respond with the user', function (err, res, body) {
       var result = JSON.parse(body);
@@ -51,10 +51,10 @@ apiEasy.describe('http-users/user/api')
       assert.isObject(result.user);
       assert.equal(result.user.username, 'devjitsu');
     })
-  .put('/users/devjitsu', { email: 'working@test.com' })
+  .put('/user/devjitsu', { email: 'working@test.com' })
     .expect(204)
   .next()
-  .get('/users/devjitsu')
+  .get('/user/devjitsu')
     .expect(200)
     .expect('should respond with the user', function (err, res, body) {
       var result = JSON.parse(body);
@@ -64,7 +64,7 @@ apiEasy.describe('http-users/user/api')
       assert.equal(result.user.username, 'devjitsu');
       assert.equal(result.user.email, 'working@test.com');
     })
-  .post('/users/testjitsu', {
+  .post('/user/testjitsu', {
     username: 'testjitsu',
     password: '1234',
     email: 'testjitsu@test.com'
@@ -72,7 +72,7 @@ apiEasy.describe('http-users/user/api')
   .expect(201)
   .next()
   .discuss('With a username that exists')
-  .post('/users/testjitsu', {
+  .post('/user/testjitsu', {
     username: 'testjitsu',
     password: '1234',
     email: 'testjitsu@test.com'
@@ -80,17 +80,17 @@ apiEasy.describe('http-users/user/api')
   .expect(500)
   .undiscuss()
   .next()
-  .get('users/testjitsu')
+  .get('/user/testjitsu')
     .expect(200)
   .next()
-  .del('/users/testjitsu')
-    .expect(200)
+  .del('/user/testjitsu')
+    .expect(204)
   .next()
-  .get('users/testjitsu')
-    .expect(500)
+  .get('/user/testjitsu')
+    .expect(404)
   .next()
   .discuss('With a username that is not available')
-    .get('/users/devjitsu/available')
+    .get('/user/devjitsu/available')
     .expect(200)
     .expect('should respond with not available', function (err, res, body) {
       var result = JSON.parse(body);
@@ -99,7 +99,7 @@ apiEasy.describe('http-users/user/api')
     })
   .undiscuss()
   .discuss('With a username that is available')
-    .get('/users/available-user/available')
+    .get('/user/available-user/available')
     .expect(200)
     .expect('should respond with available', function (err, res, body) {
       var result = JSON.parse(body);
@@ -109,9 +109,9 @@ apiEasy.describe('http-users/user/api')
   .undiscuss()
   .next()
   .discuss('With a valid username')
-    .post('/users/forgot-password', {
+    .post('/user/silly-user', {
       shake: '0123456789',
-      email: 'forgot-password@test.com',
+      email: 'silly-user@test.com',
       password: '1234'
     })
     .expect(201)
@@ -119,23 +119,23 @@ apiEasy.describe('http-users/user/api')
       var result = JSON.parse(body);
       assert.isNull(err);
       assert.isObject(result);
-      assert.equal('forgot-password', result.username);
+      assert.equal('silly-user', result.username);
     })
   .undiscuss()
   .next()
   .discuss('a shake parameter, and no password')
-    .post('/users/forgot-password/forgot', { shake: '0123456789' })
+    .post('/user/silly-user/forgot', { shake: '0123456789' })
     .expect(400)
   .undiscuss()
   .discuss('a new password, but an invalid shake')
-    .post('/users/forgot-password/forgot', {
+    .post('/user/silly-user/forgot', {
       shake: 'invalid_sauce',
       'new-password': 'secretpassword'
     })
     .expect(403)
   .undiscuss()
   .discuss('a valid shake, and a new password')
-    .post('/users/forgot-password/forgot', { 
+    .post('/user/silly-user/forgot', {
       shake: '0123456789',
       'new-password': 'secretpassword'
     })
@@ -143,7 +143,7 @@ apiEasy.describe('http-users/user/api')
   .undiscuss()
   .next()
   .discuss('but without other parameters (a new reset request)')
-    .post('/users/forgot-password/forgot')
+    .post('/user/silly-user/forgot')
     .expect(200)
   .undiscuss()
 .export(module);
