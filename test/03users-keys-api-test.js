@@ -17,7 +17,7 @@ apiEasy.describe('http-users/user/api/keys')
   .use('localhost', port)
   .setHeader('Content-Type', 'application/json')
   .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
-  .get('/keys/charlie/publicKey')
+  .get('/keys/charlie/test-key')
     .expect(200)
     .expect('should respond with the specified key', function (err, res, body) {
       var result = JSON.parse(body); 
