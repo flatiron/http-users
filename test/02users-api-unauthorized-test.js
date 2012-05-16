@@ -7,10 +7,10 @@
 
 var assert = require('assert'),
     apiEasy = require('api-easy'),
+    base64  = require('flatiron').common.base64,
     app = require('./fixtures/app/couchdb');
-    
-var port = 8080;
 
+var port = 8080;
 
 apiEasy.describe('http-users/user/api/unauthorized')
   .use('localhost', port)
@@ -20,4 +20,16 @@ apiEasy.describe('http-users/user/api/unauthorized')
     .expect(403)
   .get('/users/charlie/keys')
     .expect(403)
+  .get('/users/charlie')
+    .expect(403)
+  .next()
+  .setHeader('content-type', 'application/json')
+  .setHeader('authorization', 'Basic ' + base64.encode('charlie:1234'))
+  .get('/auth')
+    .expect(200)
+  .get('/users/charlie/keys')
+    .expect(200)
+  .get('/users/charlie')
+    .expect(200)
+
 .export(module);
