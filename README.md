@@ -30,6 +30,11 @@ Tests are written in vows and give complete coverage of all APIs and storage eng
   $ npm test
 ```
 
+# TODO
+
+ - Make memory engine work ( `./fixtures/app/memory.js`)
+ - Add support for Redis and MongoDB ( `./fixtures/app/mongodb.js`)  ( `./fixtures/app/redis.js`)
+
 #### Author: [Charlie Robbins](http://nodejitsu.com)
 #### License: MIT
 
