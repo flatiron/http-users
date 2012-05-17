@@ -61,7 +61,12 @@ app.use(flatiron.plugins.http, {
   ]
 });
 
-app.use(httpUsers);
+app.use(httpUsers, {
+  // Minor config for the ssh server
+  sshServer: 'ssh.jit.su',
+  sshServerPort: 4567,
+  sshServerToken: '550227e4862f773b2d90b57fd488c2bea47ffe8560db8782ca8a42ecc58a43919bd'
+});
 
 //
 // When `app` initializes load the composer systems and setup

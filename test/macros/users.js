@@ -154,5 +154,17 @@ module.exports = function (suite, app) {
         }
       }
     }
+  }).addBatch({
+    "The User resource": {
+      "the createSshAccount() method": {
+        topic: function () {
+          charlie.createSshAccount('test-key', this.callback);
+        },
+        "should respond corretly": function (err, respond) {
+          assert.isNull(err);
+          assert.equal(respond, 'Created.\n');
+        }
+      }
+    }
   });
 };

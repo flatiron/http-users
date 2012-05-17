@@ -17,7 +17,9 @@
   },
   "dependencies": {
     "basic-auth-parser": "0.0.x",
-    "director": "~1.0.11"
+    "director": "~1.0.11",
+    "restful": "0.1.x",
+    "request": "2.9.x"
   },
   "devDependencies": {
     "api-easy": "~0.3.5",
