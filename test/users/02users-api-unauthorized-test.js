@@ -8,11 +8,13 @@
 var assert = require('assert'),
     apiEasy = require('api-easy'),
     base64  = require('flatiron').common.base64,
+    macros  = require('../macros'),
     app = require('../fixtures/app/couchdb');
 
 var port = 8080;
 
 apiEasy.describe('http-users/user/api/unauthorized')
+  .addBatch(macros.requireStart(app))
   .use('localhost', port)
   .setHeader('content-type', 'application/json')
   .setHeader('authorization', 'Basic WTFFFUUUU==')

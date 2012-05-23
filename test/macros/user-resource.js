@@ -1,7 +1,8 @@
 
 var assert = require('assert'),
     path = require('path'),
-    vows = require('vows');
+    vows = require('vows'),
+    macros = require('./index');
 
 var key = '012345678901234567890123456789',
     charlie;
@@ -12,11 +13,11 @@ var key = '012345678901234567890123456789',
 var nano = require('nano')('http://localhost:5984');
 
 module['exports'] = function (suite, app) {
-  return suite.addBatch({
+  return suite.addBatch(macros.requireStart(app)).addBatch({
     "Setting up the tests": {
       "clearing the couch database": {
         topic: function(){
-          nano.db.destroy(app.database.database, this.callback)
+          nano.db.destroy(app.config.get('resourceful:database'), this.callback)
         },
         "should not throw": function(err, result){
           assert(true);
@@ -27,7 +28,7 @@ module['exports'] = function (suite, app) {
     "Setting up the tests": {
       "creating the couch database": {
         topic: function() {
-          nano.db.create(app.database.database, this.callback)
+          nano.db.create(app.config.get('resourceful:database'), this.callback)
         },
         "should create database": function(err, result){
           assert.isNull(err);

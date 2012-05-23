@@ -118,4 +118,7 @@ function niceTable (routes) {
 // Expose the common part of flatiron
 //
 app.common = flatiron.common;
-app.start(8080);
+
+if (!module.parent) {
+  app.start(8080);
+}
