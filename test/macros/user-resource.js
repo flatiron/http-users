@@ -6,33 +6,30 @@ var assert = require('assert'),
 var key = '012345678901234567890123456789',
     charlie;
 
-
-
 //
 // Use nano to help bootstrap couch for testing
 //
 var nano = require('nano')('http://localhost:5984');
 
 module['exports'] = function (suite, app) {
-  
   return suite.addBatch({
     "Setting up the tests": {
-      "clearing the couch database" : {
+      "clearing the couch database": {
         topic: function(){
           nano.db.destroy(app.database.database, this.callback)
         },
-        "should not throw" : function(err, result){
+        "should not throw": function(err, result){
           assert(true);
         }
       }
     }
   }).addBatch({
     "Setting up the tests": {
-      "creating the couch database" : {
+      "creating the couch database": {
         topic: function() {
           nano.db.create(app.database.database, this.callback)
         },
-        "should create database" : function(err, result){
+        "should create database": function(err, result){
           assert.isNull(err);
         }
       }
@@ -180,6 +177,5 @@ module['exports'] = function (suite, app) {
         }
       }
     }
-  })
-  
-}
+  });
+};

@@ -14,7 +14,8 @@
     "flatiron": "~0.1.9"
   },
   "dependencies": {
-    "async": "0.1.x"
+    "async": "0.1.x",
+    "restful": "*"
   },
   "devDependencies": {
     "api-easy": "0.3.x",
@@ -24,12 +25,11 @@
     "flatiron": "~0.1.9",
     "union": "0.3.x",
     "vows": "0.6.x",
-    "traverse": "*",
-    "restful": "*"
+    "traverse": "*"
   },
   "main": "./lib/http-users",
   "scripts": {
-    "test": "vows --spec test/*-test.js --isolate"
+    "test": "vows test/users/*-test.js --spec --i"
   },
   "engines": { "node": ">= 0.6.0" }
 }

@@ -63,7 +63,23 @@ app.use(flatiron.plugins.http, {
   ]
 });
 
-app.use(httpUsers);
+app.use(flatiron.plugins.resourceful, {
+  engine: 'couchdb',
+  database: 'flatiron-http-users',
+  host: 'localhost',
+  port: 5984
+});
+
+app.use(httpUsers, {
+  unauthorized: [
+    'create'
+  ]
+});
+
+//
+// This will expose all resources as restful routers
+//
+app.use(restful);
 
 app.router.get('/', function(){
   this.res.text(niceTable(app.router.routes));
@@ -72,30 +88,29 @@ app.router.get('/', function(){
 
 var traverse = require('traverse');
 
-
 //
 // TODO: Move this to director core?
 //
 function niceTable (routes) {
-
   var niceRoutes = routes,
-      str = '', 
-      verbs = ['get', 'post', 'put', 'delete'];
+      verbs = ['get', 'post', 'put', 'delete'],
+      str = '';
 
   traverse(niceRoutes).forEach(visitor);
 
   function visitor () {
     var path = this.path, 
     pad = '';
-    if(path[path.length - 1] && verbs.indexOf(path[path.length - 1]) !== -1) {
+    if (path[path.length - 1] && verbs.indexOf(path[path.length - 1]) !== -1) {
       pad += path.pop().toUpperCase();
-      for(var i = pad.length; i < 8; i++) {
+      for (var i = pad.length; i < 8; i++) {
         pad += ' ';
       }
       path = path.join('/');
       str += pad + '/' + path  + ' \n'
     }
   }
+  
   return str;
 }
 
@@ -103,31 +118,4 @@ function niceTable (routes) {
 // Expose the common part of flatiron
 //
 app.common = flatiron.common;
-
-//
-// When `app` initializes load the composer systems and setup
-// `resourceful` with the available configuration.
-//
-app.on('init', function () {
-  //
-  // Setup the `database` options with the environment in `options`.
-  //
-  var database = app.config.get('database') || {
-    host: 'localhost',
-    port: 5984,
-    recurse: "forward"
-  };
-  
-  database.database = database.database || 'flatiron-http-users';
-  app.database = database
-  resourceful.use('couchdb', database);
-  resourceful.autoMigrate = true;
-  
-});
-
 app.start(8080);
-
-//
-// This will expose all resources as restful routers
-app.use(restful);
-console.log(app.router.routes)

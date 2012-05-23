@@ -8,7 +8,7 @@
 var assert = require('assert'),
     apiEasy = require('api-easy'),
     base64  = require('flatiron').common.base64,
-    app     = require('./fixtures/app/couchdb');
+    app     = require('../fixtures/app/couchdb');
     
 var port = 8080;
 
@@ -27,7 +27,7 @@ apiEasy.describe('http-users/user/api')
   .post('/users/devjitsu', { email: 'initial@email.com', password: '1234' })
     .expect(201)
     .expect('should respond with the user created', function (err, res, body) {
-      var result = JSON.parse(body);
+      var result = JSON.parse(body).user;
       assert.isNull(err);
       assert.isObject(result);
       assert.equal('devjitsu', result.username);
@@ -39,8 +39,8 @@ apiEasy.describe('http-users/user/api')
       var result = JSON.parse(body);
       assert.isNull(err);
       assert.isObject(result);
-      assert.isArray(result.results);
-      assert.lengthOf(result.results, 3);
+      assert.isArray(result.users);
+      assert.lengthOf(result.users, 3);
     })
   .get('/users/devjitsu')
     .expect(200)
@@ -84,7 +84,7 @@ apiEasy.describe('http-users/user/api')
     .expect(200)
   .next()
   .del('/users/testjitsu')
-    .expect(204)
+    .expect(200)
   .next()
   .get('/users/testjitsu')
     .expect(404)
@@ -116,7 +116,7 @@ apiEasy.describe('http-users/user/api')
     })
     .expect(201)
     .expect('should respond with a valid user', function (err, res, body) {
-      var result = JSON.parse(body);
+      var result = JSON.parse(body).user;
       assert.isNull(err);
       assert.isObject(result);
       assert.equal('silly-user', result.username);

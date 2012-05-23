@@ -7,7 +7,7 @@
 
 var assert  = require('assert'),
     apiEasy = require('api-easy'),
-    app     = require('./fixtures/app/couchdb'),
+    app     = require('../fixtures/app/couchdb'),
     base64  = require('flatiron').common.base64;
     
 var key = '0987654321abcdefghijklmnop0987654321abcdefghijklmnop0987654321abcdefghijklmnop',
