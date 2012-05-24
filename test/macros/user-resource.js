@@ -125,9 +125,9 @@ module['exports'] = function (suite, app) {
         topic: function () {
           charlie.getKey('test-key', this.callback);
         },
-        "should respond with the correct attachment": function (err, data) {
+        "should respond with the correct attachment": function (err, result) {
           assert.isNull(err);
-          assert.equal(key, data);
+          assert.equal(key, result.key);
         }
       },
       "the all() method": {

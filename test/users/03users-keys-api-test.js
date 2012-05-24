@@ -22,10 +22,13 @@ apiEasy.describe('http-users/user/api/keys')
   .get('/users/charlie/keys/test-key')
     .expect(200)
     .expect('should respond with the specified key', function (err, res, body) {
-      var result = JSON.parse(body); 
+      var result = JSON.parse(body)
       assert.isObject(result);
       assert.isArray(result.keys);
-      assert.isString(result.keys[0]);
+      assert.isObject(result.keys[0]);
+      assert.include(result.keys[0], 'username');
+      assert.include(result.keys[0], 'name');
+      assert.include(result.keys[0], 'key');
     })
   .get('/users/charlie/keys')
     .expect(200)
