@@ -15,14 +15,14 @@
   },
   "dependencies": {
     "async": "0.1.x",
-    "restful": "git://github.com/flatiron/restful.git#gh-3"
+    "restful": "0.1.x"
   },
   "devDependencies": {
     "api-easy": "0.3.x",
     "node_hash": "0.2.x",
     "director": "1.0.x",
     "resourceful": "0.1.x",
-    "flatiron": "git://github.com/flatiron/flatiron.git#feature-resource-plugin",
+    "flatiron": "0.2.x",
     "union": "0.3.x",
     "vows": "0.6.x",
     "traverse": "*",
