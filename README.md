@@ -4,7 +4,6 @@ Encapsulated routes and resources for managing users in [flatiron][0] HTTP apps
 
 ## Permissions
 
-* "access app"
 * "list all users"
 * "modify permissions"
 * "confirm users"

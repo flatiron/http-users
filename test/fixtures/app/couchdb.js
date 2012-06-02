@@ -6,6 +6,7 @@
  */
  
 var director = require('director'),
+    de = require('director-explorer'),
     flatiron = require('flatiron'),
     restful  = require('restful'),
     resourceful = require('resourceful'),
@@ -71,9 +72,7 @@ app.use(flatiron.plugins.resourceful, {
 });
 
 app.use(httpUsers, {
-  unauthorized: [
-    'create'
-  ]
+  unauthorized: ['create']
 });
 
 //
@@ -81,43 +80,10 @@ app.use(httpUsers, {
 //
 app.use(restful);
 
-app.router.get('/', function(){
-  this.res.text(niceTable(app.router.routes));
+app.router.get('/', function () {
+  this.res.text(de.table(app.router.routes));
   this.res.end();
-})
-
-var traverse = require('traverse');
-
-//
-// TODO: Move this to director core?
-//
-function niceTable (routes) {
-  var niceRoutes = routes,
-      verbs = ['get', 'post', 'put', 'delete'],
-      str = '';
-
-  traverse(niceRoutes).forEach(visitor);
-
-  function visitor () {
-    var path = this.path, 
-    pad = '';
-    if (path[path.length - 1] && verbs.indexOf(path[path.length - 1]) !== -1) {
-      pad += path.pop().toUpperCase();
-      for (var i = pad.length; i < 8; i++) {
-        pad += ' ';
-      }
-      path = path.join('/');
-      str += pad + '/' + path  + ' \n'
-    }
-  }
-  
-  return str;
-}
-
-//
-// Expose the common part of flatiron
-//
-app.common = flatiron.common;
+});
 
 if (!module.parent) {
   app.start(8080);

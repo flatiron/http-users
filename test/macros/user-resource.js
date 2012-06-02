@@ -7,35 +7,11 @@ var assert = require('assert'),
 var key = '012345678901234567890123456789',
     charlie;
 
-//
-// Use nano to help bootstrap couch for testing
-//
-var nano = require('nano')('http://localhost:5984');
-
-module['exports'] = function (suite, app) {
-  return suite.addBatch(macros.requireStart(app)).addBatch({
-    "Setting up the tests": {
-      "clearing the couch database": {
-        topic: function(){
-          nano.db.destroy(app.config.get('resourceful:database'), this.callback)
-        },
-        "should not throw": function(err, result){
-          assert(true);
-        }
-      }
-    }
-  }).addBatch({
-    "Setting up the tests": {
-      "creating the couch database": {
-        topic: function() {
-          nano.db.create(app.config.get('resourceful:database'), this.callback)
-        },
-        "should create database": function(err, result){
-          assert.isNull(err);
-        }
-      }
-    }
-  }).addBatch({
+module.exports = function (suite, app) {
+  return suite
+    .addBatch(macros.requireStart(app))
+    .addBatch(macros.destroyDb(app))
+    .addBatch(macros.createDb(app)).addBatch({
     "The User resource": {
       "the create() method": {
         topic: function () {

@@ -64,11 +64,6 @@ app.use(flatiron.plugins.http, {
 app.use(httpUsers);
 
 //
-// Expose the common part of flatiron
-//
-app.common = flatiron.common;
-
-//
 // When `app` initializes load the composer systems and setup
 // `resourceful` with the available configuration.
 //
