@@ -45,7 +45,16 @@ apiEasy.describe('http-users/user/api/keys')
   .get('/users/devjitsu/keys')
     .expect(200)
     .expect('should respond with all keys for the user', function (err, res, body) {
-      var result = JSON.parse(body); 
+      var result = JSON.parse(body);
+      assert.isObject(result);
+      assert.isArray(result.keys);
+      assert.lengthOf(result.keys, 1);
+    })
+  .next()
+  .get('/users/keys')
+    .expect(200)
+    .expect('should respond with all keys for all users', function (err, res, body) {
+      var result = JSON.parse(body);
       assert.isObject(result);
       assert.isArray(result.keys);
       assert.lengthOf(result.keys, 2);
