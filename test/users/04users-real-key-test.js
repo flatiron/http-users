@@ -50,9 +50,8 @@ apiEasy.describe('http-users/user/api/sshkeys')
     .expect('should respond with the specified key', function (err, res, body) {
       var result = JSON.parse(body); 
       assert.isObject(result);
-      assert.isArray(result.keys);
-      assert.isString(result.keys[0].key);
-      assert.equal(result.keys[0].key, sshkey);
+      assert.isString(result.key.key);
+      assert.equal(result.key.key, sshkey);
     })
   .next()
   .get('/users/keytester/keys')
@@ -64,4 +63,15 @@ apiEasy.describe('http-users/user/api/sshkeys')
       assert.lengthOf(result.keys, 1);
       assert.equal(result.keys[0].key, sshkey);
     })
+  .undiscuss()
+  .discuss('Creating ssh account with the real ssh key')
+  .get('/users/keytester/keys/mykey/sshEnable')
+    .expect(200)
+    .expect('should respond with a confirmation message', function (err, res, body) {
+      assert.isNull(err);
+      assert.ok(res);
+      assert.ok(body);
+      assert.equal(body, '"Created.\\n"');
+    })
+  .undiscuss()
 .export(module);
