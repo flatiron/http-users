@@ -1,14 +1,22 @@
 module.exports = [
   {
-     resource: "Permission",
-     name: "modify permissions"
+    resource: 'Permission',
+    name: 'modify permissions',
+    type: 'boolean'
   }, 
   {  
-     resource: "Permission",
-     name: "view all users"
+    resource: 'Permission',
+    name: 'view all users',
+    type: 'boolean'
   }, 
   {  
-     resource: "Permission",
-     name: "confirm users"
+    resource: 'Permission',
+    name: 'confirm users',
+    type: 'boolean'
+  },
+  {
+    resource: 'Permission',
+    name: 'array permission',
+    type: 'array'
   }
 ];

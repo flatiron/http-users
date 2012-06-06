@@ -10,82 +10,12 @@ var assert = require('assert'),
     async = require('flatiron').common.async,
     macros = require('../macros');
 
-var app = require('../fixtures/app/couchdb');
-
-function shouldBeAble(resource, perm, value) {
-  return function () {
-    assert.isTrue(app.resources.Permission.can(resource, perm, value));
-  }
-}
-
-function shouldAllow(username, perm, value, expected) {
-  return {
-    topic: function () {
-      async.waterfall([
-        function getUser(next) {
-          app.resources.User.get(username, next);
-        },
-        function addPermission(user, next) {
-          app.resources.Permission.allow(user, perm, value, next);
-        },
-        function getUserAgain(_, next) {
-          app.resources.User.get(username, next);
-        }
-      ], this.callback);
-    },
-    "should add the permission to the resource": function (err, user) {
-      assert.isNull(err);
-      
-      if (!value) {
-        assert.equal(user.permissions[perm], value || true);
-      }
-      else {
-        assert.include(user.permissions[perm], value);
-      }
-      
-      if (expected) {
-        assert.deepEqual(user.permissions[perm], expected);
-      }
-    }
-  }
-}
-
-function shouldDisallow(username, perm, value, expected) {
-  if (typeof value === 'undefined') {
-    value = false;
-  }
-  
-  return {
-    topic: function () {
-      async.waterfall([
-        function getUser(next) {
-          app.resources.User.get(username, next);
-        },
-        function addPermission(user, next) {
-          app.resources.Permission.disallow(user, perm, value, next);
-        },
-        function getUserAgain(_, next) {
-          app.resources.User.get(username, next);
-        }
-      ], this.callback);
-    },
-    "should remove the permission from the resource": function (err, user) {
-      assert.isNull(err);
-      
-      if (Array.isArray(user.permissions[perm])) {
-        assert.isTrue(!!user.permissions[perm].length);
-        assert.equal(user.permissions[perm].indexOf(value), -1);
-      }
-      else if (!value) {
-        assert.equal(user.permissions[perm], value);
-      }
-      
-      if (expected) {
-        assert.deepEqual(user.permissions[perm], expected);
-      }
-    }
-  }
-}
+var app = require('../fixtures/app/couchdb'),
+    permissions = macros.resources.permissions,
+    shouldBeAble = permissions.shouldBeAble,
+    shouldAllow = permissions.shouldAllow,
+    shouldDisallow = permissions.shouldDisallow,
+    shouldError = permissions.shouldError;
 
 vows.describe('http-users/couchdb/permissions')
   .addBatch(macros.requireStart(app))
@@ -99,25 +29,29 @@ vows.describe('http-users/couchdb/permissions')
         "should respond with all permissions": function (err, perms) {
           assert.isNull(err);
           assert.isArray(perms);
-          assert.lengthOf(perms, 3);
+          assert.lengthOf(perms, 4);
         }
       },
       "the can() method": {
         "with a no value provided": shouldBeAble(
+          app,
           { permissions: { 'do foo': true } },
           'do foo'
         ),
         "with a simple boolean": shouldBeAble(
+          app,
           { permissions: { 'do foo': true } },
           'do foo',
           true
         ),
         "with an array of values": shouldBeAble(
+          app,
           { permissions: { 'access app': ['foo', 'bar'] } },
           'access app',
           'foo'
         ),
         "with an array of wildcards": shouldBeAble(
+          app,
           { permissions: { 'access app': ['charlie/*', 'marak/bar'] } },
           'access app',
           'charlie/foo'
@@ -125,18 +59,37 @@ vows.describe('http-users/couchdb/permissions')
       },
       "the allow() method": {
         "with a simple boolean": shouldAllow(
+          app,
           'charlie',
-          'new permission'
+          'modify permissions'
         ),
         "with a string value": shouldAllow(
+          app,
           'marak',
-          'string list',
+          'array permission',
           'foo'
         ),
         "with a second string value": shouldAllow(
+          app,
           'elijah',
-          'string-to-bool',
+          'array permission',
           'foo'
+        ),
+        "with a non-existant permission": shouldError(
+          app,
+          'elijah',
+          'yunoexist',
+          'foo',
+          'allow',
+          'not_found'
+        ),
+        "with a type mismatch": shouldError(
+          app,
+          'charlie',
+          'confirm users',
+          'foo',
+          'allow',
+          'foo is not valid for boolean permission'
         )
       }
     }
@@ -145,39 +98,54 @@ vows.describe('http-users/couchdb/permissions')
     "The Permission resource": {
       "the allow() method": {
         "with a second string value": shouldAllow(
+          app,
           'marak',
-          'string list',
+          'array permission',
           'bar',
           ['foo', 'bar']
         ),
-        "when updating a boolean to a string": shouldAllow(
-          'charlie',
-          'new permission',
-          'value'
-        ),
-        "when updating a string to a boolean": shouldAllow(
-          'elijah',
-          'string-to-bool'
-        )
+        // "when updating a boolean to a string": shouldAllow(
+        //   'charlie',
+        //   'new permission',
+        //   'value'
+        // ),
+        // "when updating a string to a boolean": shouldAllow(
+        //   'elijah',
+        //   'string-to-bool'
+        // )
       }
     }
   })
   .addBatch({
     "The Permission resource": {
       "the disallow() method": {
-        "when updating a string": shouldDisallow(
-          'charlie',
-          'new permission'
-        ),
         "when updating a boolean": shouldDisallow(
-          'elijah',
-          'string-to-bool'
+          app,
+          'charlie',
+          'modify permissions'
         ),
         "when removing a string value": shouldDisallow(
+          app,
           'marak',
-          'string list',
+          'array permission',
           'foo',
           ['bar']
+        ),
+        "with a non-existant permission": shouldError(
+          app,
+          'elijah',
+          'yunoexist',
+          'foo',
+          'disallow',
+          'not_found'
+        ),
+        "with a type mismatch": shouldError(
+          app,
+          'charlie',
+          'confirm users',
+          'foo',
+          'disallow',
+          'foo is not valid for boolean permission'
         )
       }
     }
@@ -186,8 +154,9 @@ vows.describe('http-users/couchdb/permissions')
     "The Permission resource": {
       "the disallow() method": {
         "when removing the last string value": shouldDisallow(
+          app,
           'marak',
-          'string list',
+          'array permission',
           'bar'
         )
       }

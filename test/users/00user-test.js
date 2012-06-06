@@ -8,7 +8,7 @@
 var vows = require('vows'),
     macros = require('../macros');
 
-macros.resources.user(
+macros.resources.users(
   vows.describe('http-users/couchdb/users'),
   require('../fixtures/app/couchdb')
 ).export(module);
@@ -17,7 +17,7 @@ macros.resources.user(
 // Remark: I don't think the memory engine will every really
 // work with our filters.
 //
-// macros.resources.user(
+// macros.resources.users(
 //   vows.describe('http-users/memory/users'),
 //   require('../fixtures/app/memory')
 // ).export(module);

@@ -78,7 +78,7 @@ macros.seedDb = function (app) {
             function insertDocs(next) {
               permissions.forEach(function (perm) {
                 perm.ctime = perm.mtime = +(new Date()); 
-                perm._id = ['permission', perm.name.replace(' ', '-')].join('/');
+                perm._id = ['permission', perm.name].join('/');
               });
               
               users.forEach(function (user) {
@@ -102,5 +102,6 @@ macros.seedDb = function (app) {
 };
 
 macros.resources = {
-  user: require('./user-resource')
+  users: require('./users'),
+  permissions: require('./permissions')
 };
