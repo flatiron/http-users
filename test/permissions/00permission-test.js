@@ -32,6 +32,20 @@ vows.describe('http-users/couchdb/permissions')
           assert.lengthOf(perms, 4);
         }
       },
+      "the create() method": {
+        "with an invalid type": {
+          topic: function () {
+            app.resources.Permission.create({
+              name: 'invalid type',
+              type: 'badtype'
+            }, this.callback.bind(this, null));
+          },
+          "should respond with the correct validation error": function (_, err) {
+            assert.isArray(err);
+            assert.deepEqual(err[0].expected, ['boolean', 'array']);
+          }
+        }
+      },
       "the can() method": {
         "with a no value provided": shouldBeAble(
           app,
@@ -103,16 +117,7 @@ vows.describe('http-users/couchdb/permissions')
           'array permission',
           'bar',
           ['foo', 'bar']
-        ),
-        // "when updating a boolean to a string": shouldAllow(
-        //   'charlie',
-        //   'new permission',
-        //   'value'
-        // ),
-        // "when updating a string to a boolean": shouldAllow(
-        //   'elijah',
-        //   'string-to-bool'
-        // )
+        )
       }
     }
   })
