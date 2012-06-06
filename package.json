@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "async": "0.1.x",
-    "restful": "0.1.x"
+    "restful": "0.1.x",
+    "basic-auth-parser": "0.0.x"
   },
   "devDependencies": {
     "api-easy": "0.3.x",
