@@ -75,7 +75,7 @@ vows.describe('http-users/couchdb/permissions')
         "with a simple boolean": shouldAllow(
           app,
           'charlie',
-          'modify permissions'
+          'confirm users'
         ),
         "with a string value": shouldAllow(
           app,
@@ -127,7 +127,7 @@ vows.describe('http-users/couchdb/permissions')
         "when updating a boolean": shouldDisallow(
           app,
           'charlie',
-          'modify permissions'
+          'confirm users'
         ),
         "when removing a string value": shouldDisallow(
           app,

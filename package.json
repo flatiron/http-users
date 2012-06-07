@@ -12,19 +12,20 @@
   },
   "peerDependencies": {
     "flatiron": "~0.2.0",
-    "restful": "0.1.x"
+    "director": "~1.0.11",
+    "restful": "~0.1.1"
   },
   "dependencies": {
     "basic-auth-parser": "0.0.x"
   },
   "devDependencies": {
-    "api-easy": "0.3.x",
+    "api-easy": "~0.3.5",
     "node_hash": "0.2.x",
-    "director": "1.0.x",
+    "director": "~1.0.11",
     "director-explorer": "0.0.1",
     "resourceful": "0.1.x",
     "flatiron": "0.2.x",
-    "restful": "0.1.x",
+    "restful": "~0.1.1",
     "union": "0.3.x",
     "vows": "0.6.x",
     "nano": "*"

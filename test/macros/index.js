@@ -1,6 +1,8 @@
 
 var assert = require('assert'),
-    async = require('flatiron').common.async,
+    common = require('flatiron').common,
+    async = common.async,
+    hash = require('node_hash'),
     permissions = require('../fixtures/permissions'),
     users = require('../fixtures/users');
 
@@ -84,6 +86,10 @@ macros.seedDb = function (app) {
               users.forEach(function (user) {
                 user.ctime = user.mtime = +(new Date()); 
                 user._id = ['user', user.username].join('/');
+
+                user['password-salt'] = user['password-salt'] || common.randomString(16);
+                user.password = user.password || '';
+                user.password = hash.md5(user.password, user['password-salt']);
               });
               
               nano.db.use(name).bulk(

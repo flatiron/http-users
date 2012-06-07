@@ -21,9 +21,6 @@ module.exports = [
      username: "elijah",
      password: "1234",
      email: "tmpvar@gmail.com",
-     status: "active",
-     permissions: {
-       "modify permissions": ['elijah']
-     }
+     status: "active"
   }
 ];
