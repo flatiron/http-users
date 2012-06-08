@@ -19,6 +19,12 @@ apiEasy.describe('http-users/user/permissions/api')
   .use('localhost', port)
   .setHeader('Content-Type', 'application/json')
   .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
+  .discuss('With a user that does not exist')
+    .put('/users/yunoexist/permissions', {
+      name: 'confirm users',
+      value: true
+    }).expect(404)
+  .undiscuss()
   .discuss('With a valid permission')
     .put('/users/charlie/permissions', {
       name: 'confirm users',
