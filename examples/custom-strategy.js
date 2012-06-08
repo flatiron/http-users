@@ -40,7 +40,7 @@ app.use(httpUsers, {
   strategy: new DummyStrategy()
 });
 
-app.router.before(app.basicAuth);
+app.router.before(app.requireAuth);
 
 app.router.get('/', function () {
   this.res.writeHead(200, { 'Content-Type': 'text/plain' });
