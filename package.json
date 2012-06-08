@@ -16,7 +16,8 @@
     "restful": "~0.1.1"
   },
   "dependencies": {
-    "basic-auth-parser": "0.0.x"
+    "basic-auth-parser": "0.0.x",
+    "director": "~1.0.11"
   },
   "devDependencies": {
     "api-easy": "~0.3.5",
