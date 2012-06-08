@@ -11,7 +11,7 @@
     "url": "http://github.com/flatiron/http-users.git" 
   },
   "peerDependencies": {
-    "flatiron": "~0.2.0",
+    "flatiron": "~0.2.1",
     "director": "~1.0.11",
     "restful": "~0.1.1"
   },
@@ -24,7 +24,7 @@
     "director": "~1.0.11",
     "director-explorer": "0.0.1",
     "resourceful": "0.1.x",
-    "flatiron": "0.2.x",
+    "flatiron": "~0.2.1",
     "restful": "~0.1.1",
     "union": "0.3.x",
     "vows": "0.6.x",
