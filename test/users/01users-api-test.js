@@ -53,6 +53,8 @@ apiEasy.describe('http-users/user/api')
       assert.isObject(result.user);
       assert.equal(result.user.username, 'devjitsu');
     })
+  .get('/users/noob')
+    .expect(404)
   .put('/users/devjitsu', { email: 'working@test.com' })
     .expect(204)
   .next()
