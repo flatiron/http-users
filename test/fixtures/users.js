@@ -22,5 +22,12 @@ module.exports = [
      password: "1234",
      email: "tmpvar@gmail.com",
      status: "active"
-  }
+  },
+  {
+     resource: "User",
+     username: "shaketest",
+     password: "1234",
+     shake: "q6L3D0A4falo8DSpgTNzrJ",
+     email: "shaketest@nodejitsu.com",
+  },
 ];
