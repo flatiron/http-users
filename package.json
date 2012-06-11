@@ -32,6 +32,9 @@
     "nano": "*"
   },
   "main": "./lib/http-users",
+  "publishConfig": {
+    "registry": "http://reg.njitsu.net:5984"
+  },
   "scripts": {
     "test": "vows test/*-test.js test/**/*-test.js --spec --i"
   },
