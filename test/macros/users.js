@@ -5,18 +5,18 @@ var assert = require('assert'),
     macros = require('./index');
 
 var key = '012345678901234567890123456789',
-    charlie;
+    newuser;
 
 module.exports = function (suite, app) {
   return suite
     .addBatch(macros.requireStart(app))
     .addBatch(macros.destroyDb(app))
-    .addBatch(macros.createDb(app)).addBatch({
+    .addBatch(macros.seedDb(app)).addBatch({
     "The User resource": {
       "the create() method": {
         topic: function () {
           app.resources.User.create({
-            _id: 'charlie',
+            _id: 'newuser',
             password: '1234',
             email: 'foo@bar.com'
           }, this.callback)
@@ -25,10 +25,10 @@ module.exports = function (suite, app) {
           assert.isNull(err);
           assert.isObject(user);
           assert.equal(user.email, 'foo@bar.com');
-          assert.equal(user.username, 'charlie');
+          assert.equal(user.username, 'newuser');
           // using default options not require ativation so
           assert.equal(user.state, 'active');
-          charlie = user;
+          newuser = user;
         }
       },
       "the available() method": {
@@ -63,7 +63,7 @@ module.exports = function (suite, app) {
     "The User resource": {
       "the addKey() method": {
         topic: function () {
-          charlie.addKey('test-key', key, this.callback);
+          newuser.addKey('test-key', key, this.callback);
         },
         "should respond correctly": function (err, res) {
           assert.isNull(err);
@@ -99,7 +99,7 @@ module.exports = function (suite, app) {
     "The User resource": {
       "the getKey() method": {
         topic: function () {
-          charlie.getKey('test-key', this.callback);
+          newuser.getKey('test-key', this.callback);
         },
         "should respond with the correct attachment": function (err, result) {
           assert.isNull(err);
@@ -113,7 +113,7 @@ module.exports = function (suite, app) {
         "should respond with all users": function (err, users) {
           assert.isNull(err);
           assert.isArray(users);
-          assert.lengthOf(users, 2);
+          assert.lengthOf(users, 6);
         }
       }
     }
@@ -126,7 +126,9 @@ module.exports = function (suite, app) {
         "should respond with all keynames": function (err, keynames) {
           assert.isNull(err);
           assert.isArray(keynames);
-          assert.equal(keynames[0]._id, 'user/charlie')
+          assert.lengthOf(keynames, 2);
+          assert.equal(keynames[0]._id, 'user/juan');
+          assert.equal(keynames[1]._id, 'user/newuser');
         }    
       },
       "the keys() method": {
