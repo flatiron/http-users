@@ -69,6 +69,11 @@ vows.describe('http-users/couchdb/permissions')
           { permissions: { 'access app': ['charlie/*', 'marak/bar'] } },
           'access app',
           'charlie/foo'
+        ),
+        "with a `superuser` permission": shouldBeAble(
+          app,
+          { permissions: { superuser: true } },
+          'whatever, really'
         )
       },
       "the allow() method": {
