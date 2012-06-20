@@ -36,7 +36,7 @@ apiEasy.describe('http-users/permissions/api')
       assert.equal(result.permission.type, 'boolean');
     })
   .del('permissions/second permission')
-    .expect(200)
+    .expect(204)
   .next()
   .get('permissions/second permission')
     .expect(404)
