@@ -30,4 +30,20 @@ module.exports = [
      shake: "q6L3D0A4falo8DSpgTNzrJ",
      email: "shaketest@nodejitsu.com",
   },
+  {
+    resource: "User",
+    username: "maciej",
+    password: "1234",
+    inviteCode: "1337",
+    email: "me@mmalecki.com",
+    status: "new"
+  },
+  {
+    resource: "User",
+    username: "daniel",
+    password: "1234",
+    inviteCode: "h4x0r",
+    email: "cronopio@nodejitsu.com",
+    status: "new"
+  }
 ];

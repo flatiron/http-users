@@ -34,7 +34,7 @@ module.exports = function (suite, app) {
       "the available() method": {
         "with an unused name": {
           topic: function () {
-            app.resources.User.available('daniel', this.callback);
+            app.resources.User.available('randomguy', this.callback);
           },
           "should respond available": function (err, res) {
             assert.isNull(err);
@@ -113,7 +113,7 @@ module.exports = function (suite, app) {
         "should respond with all users": function (err, users) {
           assert.isNull(err);
           assert.isArray(users);
-          assert.lengthOf(users, 6);
+          assert.lengthOf(users, 8);
         }
       }
     }
