@@ -164,4 +164,19 @@ apiEasy.describe('http-users/user/api')
         assert.equal(body.user.status, 'pending');
       })
   .undiscuss()
+
+  .discuss('confirmation by user')
+    .authenticate('daniel', '1234')
+    .post('/users/daniel/confirm', { inviteCode: 'h4x0r' })
+      .expect(200)
+    .next()
+    .get('/users/daniel')
+      .expect(200)
+      .expect('user to be `active`', function (err, res, body) {
+        assert.isNull(err);
+        body = JSON.parse(body);
+        assert.equal(body.user.status, 'active');
+      })
+    .unauthenticate()
+  .undiscuss()
 .export(module);
