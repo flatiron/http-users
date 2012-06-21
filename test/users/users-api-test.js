@@ -151,4 +151,17 @@ apiEasy.describe('http-users/user/api')
     .post('/users/silly-user/forgot')
     .expect(200)
   .undiscuss()
+
+  .discuss('confirmation by superuser')
+    .post('/users/maciej/confirm')
+      .expect(200)
+    .next()
+    .get('/users/maciej')
+      .expect(200)
+      .expect('user to be `active`', function (err, res, body) {
+        assert.isNull(err);
+        body = JSON.parse(body);
+        assert.equal(body.user.status, 'pending');
+      })
+  .undiscuss()
 .export(module);
