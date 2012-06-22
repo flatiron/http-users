@@ -172,4 +172,5 @@ vows.describe('http-users/couchdb/permissions')
       }
     }
   })
+  .addBatch(macros.requireStop(app))
   .export(module);
