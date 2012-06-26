@@ -20,9 +20,12 @@ apiEasy.describe('http-users/permissions/api')
   .setHeader('Content-Type', 'application/json')
   .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
   .post('/permissions/new permission', {
+    name: 'new permission',
     type: 'boolean'
-  }).expect(201)
+  })
+  .expect(201)
   .post('/permissions', {
+    _id: 'second permission',
     name: 'second permission',
     type: 'array'
   }).expect(201)

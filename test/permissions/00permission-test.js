@@ -41,8 +41,9 @@ vows.describe('http-users/couchdb/permissions')
             }, this.callback.bind(this, null));
           },
           "should respond with the correct validation error": function (_, err) {
-            assert.isArray(err);
-            assert.deepEqual(err[0].expected, ['boolean', 'array']);
+            assert.isObject(err.validate);
+            assert.isArray(err.validate.errors);
+            assert.deepEqual(err.validate.errors[0].expected, ['boolean', 'array']);
           }
         }
       },
