@@ -15,6 +15,7 @@ var port = 8080;
 
 apiEasy.describe('http-users/user/api')
   .addBatch(macros.requireStart(app))
+  .addBatch(macros.seedDb(app))
   .use('localhost', port)
   .setHeader('Content-Type', 'application/json')
   .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
@@ -42,7 +43,7 @@ apiEasy.describe('http-users/user/api')
       assert.isNull(err);
       assert.isObject(result);
       assert.isArray(result.users);
-      assert.lengthOf(result.users, 3);
+      assert.lengthOf(result.users, 5);
     })
   .get('/users/devjitsu')
     .expect(200)

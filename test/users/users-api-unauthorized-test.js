@@ -15,6 +15,7 @@ var port = 8080;
 
 apiEasy.describe('http-users/user/api/unauthorized')
   .addBatch(macros.requireStart(app))
+  .addBatch(macros.seedDb(app))
   .use('localhost', port)
   .setHeader('content-type', 'application/json')
   .setHeader('authorization', 'Basic WTFFFUUUU==')

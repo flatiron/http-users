@@ -75,7 +75,19 @@ macros.seedDb = function (app) {
             //
             async.apply(nano.db.create, name),
             //
-            // 3. Insert the docs into the database.
+            // 3. Sync views.
+            //
+            function (next) {
+              var actions = [];
+
+              Object.keys(app.resources).forEach(function (key) {
+                var resource = app.resources[key];
+                actions.push(resource.sync.bind(app.resources[key]));
+              });
+              async.parallel(actions, next);
+            },
+            //
+            // 4. Insert the docs into the database.
             //
             function insertDocs(next) {
               permissions.forEach(function (perm) {
