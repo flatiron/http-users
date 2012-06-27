@@ -1,5 +1,5 @@
 /*
- * users-api-test.js: Tests for the RESTful users API.
+ * users-api-unauthorized-test.js: Tests for the RESTful users API which do not require auth.
  *
  * (C) 2010, Nodejitsu Inc.
  *

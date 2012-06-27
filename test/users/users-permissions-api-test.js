@@ -1,5 +1,5 @@
 /*
- * 04users-permissions-api-test.js: Tests for the RESTful user permissions API.
+ * users-permissions-api-test.js: Tests for the RESTful user permissions API.
  *
  * (C) 2010, Nodejitsu Inc.
  *

@@ -1,5 +1,5 @@
 /*
- * users-api-test.js: Tests for the RESTful users API.
+ * users-api-keys-test.js: Tests for the RESTful users SSH keys API.
  *
  * (C) 2010, Nodejitsu Inc.
  *

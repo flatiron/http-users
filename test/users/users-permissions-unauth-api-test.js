@@ -1,5 +1,5 @@
 /*
- * 05users-permissions-unauth-api-test.js: Tests for the RESTful user permissions API.
+ * users-permissions-unauth-api-test.js: Tests for the RESTful user permissions API with no auth.
  *
  * (C) 2010, Nodejitsu Inc.
  *
