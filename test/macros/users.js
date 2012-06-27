@@ -18,7 +18,10 @@ module.exports = function (suite, app) {
           app.resources.User.create({
             _id: 'charlie',
             password: '1234',
-            email: 'foo@bar.com'
+            email: 'foo@bar.com',
+            permissions: {
+              'modify users': true
+            }
           }, this.callback)
         },
         "should respond with the appropriate object": function (err, user) {

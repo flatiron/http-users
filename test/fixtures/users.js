@@ -6,7 +6,8 @@ module.exports = [
      email: "charlie.robbins@gmail.com",
      status: "active",
      permissions: {
-       "modify permissions": true
+       "modify permissions": true,
+       "modify users": true
      }
   }, 
   {  

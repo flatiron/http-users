@@ -27,7 +27,7 @@ apiEasy.describe('http-users/user/permissions/api/unauthorized')
         assert.ok(req);
         assert.equal(body, '{"authorized":true}');
       })
-    .get('/users/shaketest')
+    .get('/user/me')
       .expect(200)
       .expect('should not have any permission', function (err, req) {
         var body = JSON.parse(req.body);

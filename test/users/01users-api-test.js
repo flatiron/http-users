@@ -150,4 +150,5 @@ apiEasy.describe('http-users/user/api')
     .post('/users/silly-user/forgot')
     .expect(200)
   .undiscuss()
+  .addBatch(macros.requireStop(app))
 .export(module);
