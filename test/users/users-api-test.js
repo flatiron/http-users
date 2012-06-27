@@ -7,7 +7,6 @@
 
 var assert = require('assert'),
     apiEasy = require('api-easy'),
-    base64  = require('flatiron').common.base64,
     macros  = require('../macros'),
     app     = require('../fixtures/app/couchdb');
     
@@ -18,7 +17,7 @@ apiEasy.describe('http-users/user/api')
   .addBatch(macros.seedDb(app))
   .use('localhost', port)
   .setHeader('Content-Type', 'application/json')
-  .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
+  .authenticate('charlie', '1234')
   .discuss('With valid creds')
   .get('/auth')
     .expect(200)
@@ -76,7 +75,7 @@ apiEasy.describe('http-users/user/api')
   })
   .expect(201)
   .next()
-  .discuss('With a username that exists')
+  .discuss('and a username that exists')
   .post('/users/testjitsu', {
     username: 'testjitsu',
     password: '1234',
@@ -94,7 +93,7 @@ apiEasy.describe('http-users/user/api')
   .get('/users/testjitsu')
     .expect(404)
   .next()
-  .discuss('With a username that is not available')
+  .discuss('and a username that is not available')
     .get('/users/devjitsu/available')
     .expect(200)
     .expect('should respond with not available', function (err, res, body) {
@@ -103,7 +102,7 @@ apiEasy.describe('http-users/user/api')
       assert.equal(result.available, false);
     })
   .undiscuss()
-  .discuss('With a username that is available')
+  .discuss('and a username that is available')
     .get('/users/available-user/available')
     .expect(200)
     .expect('should respond with available', function (err, res, body) {
@@ -113,7 +112,7 @@ apiEasy.describe('http-users/user/api')
     })
   .undiscuss()
   .next()
-  .discuss('With a valid username')
+  .discuss('and a valid username')
     .post('/users/silly-user', {
       shake: '0123456789',
       email: 'silly-user@test.com',
@@ -180,6 +179,29 @@ apiEasy.describe('http-users/user/api')
     .authenticate('silly-user', 'secretpassword')
     .get('/auth')
       .expect(200)
+  .undiscuss()
+  .undiscuss()
+  .unauthenticate()
+  .next()
+  .authenticate('marak', '1234')
+  .discuss('and the user lacks `modify permissions`')
+    .discuss('and attempts to modify their own permissions')
+    .put('/users/marak', {
+      permissions: {
+        'modify users': true
+      }
+    })
+    .expect(204)
+  .next()
+  .get('/users/marak')
+  .expect('should not add the permissions to the user', function (err, res, body) {
+    var result = JSON.parse(body).user;
+    assert.isNull(err);
+    assert.isObject(result);
+    assert.equal('marak', result.username);
+    assert.isObject(result.permissions);
+    assert.isTrue(!result.permissions['modify users']);
+  })
   .undiscuss()
   .addBatch(macros.requireStop(app))
   .export(module);

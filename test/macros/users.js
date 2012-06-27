@@ -30,11 +30,15 @@ module.exports = function (suite, app) {
           assert.isObject(user);
           assert.equal(user.email, 'foo@bar.com');
           assert.equal(user.username, 'newuser');
+          
+          //
           // using default options not require ativation so
+          //
           assert.equal(user.state, 'active');
           assert.isString(user.password);
           assert.isString(user['password-salt']);
           assert.equal(user.password, hash.md5('1234', user['password-salt']));
+          assert.isObject(user.permissions);
           newuser = user;
         }
       },
