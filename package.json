@@ -20,7 +20,7 @@
     "director": "~1.0.11"
   },
   "devDependencies": {
-    "api-easy": "~0.3.5",
+    "api-easy": "~0.3.6",
     "node_hash": "0.2.x",
     "director": "~1.0.11",
     "director-explorer": "0.0.1",
