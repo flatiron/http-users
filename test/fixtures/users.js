@@ -15,7 +15,7 @@ module.exports = [
      username: "marak",
      password: "1234",
      email: "marak.squires@gmail.com",
-     status: "active"     
+     status: "active"
   }, 
   {  
      resource: "User",
@@ -29,7 +29,7 @@ module.exports = [
      username: "shaketest",
      password: "1234",
      shake: "q6L3D0A4falo8DSpgTNzrJ",
-     email: "shaketest@nodejitsu.com",
+     email: "shaketest@nodejitsu.com"
   },
   {
     resource: "User",
@@ -45,9 +45,6 @@ module.exports = [
     password: "1234",
     inviteCode: "h4x0r",
     email: "cronopio@nodejitsu.com",
-    status: "new",
-    permissions: {
-     "modify users": true
-   }
+    status: "new"
   }
 ];
