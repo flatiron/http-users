@@ -34,6 +34,14 @@ apiEasy.describe('http-users/user/api')
       assert.isObject(result);
       assert.equal('devjitsu', result.username);
     })
+  .post('/users/MixEDCasE', { email: 'initial@email.com', password: '1234' })
+    .expect(201)
+    .expect('should respond with a lowercase username', function (err, res, body) {
+      var result = JSON.parse(body).user;
+      assert.isNull(err);
+      assert.isObject(result);
+      assert.equal('mixedcase', result.username);
+    })
   .next()
   .get('/users')
     .expect(200)
@@ -42,7 +50,7 @@ apiEasy.describe('http-users/user/api')
       assert.isNull(err);
       assert.isObject(result);
       assert.isArray(result.users);
-      assert.lengthOf(result.users, 7);
+      assert.lengthOf(result.users, 8);
     })
   .get('/users/devjitsu')
     .expect(200)
