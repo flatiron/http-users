@@ -34,5 +34,5 @@ apiEasy.describe('http-users/user/api/unauthorized')
     .expect(200)
   .get('/users/charlie')
     .expect(200)
-
-.export(module);
+  .addBatch(macros.requireStop(app))
+  .export(module);

@@ -18,5 +18,10 @@ module.exports = [
     resource: 'Permission',
     name: 'array permission',
     type: 'array'
+  },
+  {
+    resource: 'Permission',
+    name: 'modify users',
+    type: 'boolean'
   }
 ];

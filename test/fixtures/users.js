@@ -6,7 +6,8 @@ module.exports = [
      email: "charlie.robbins@gmail.com",
      status: "active",
      permissions: {
-       "modify permissions": true
+       "modify permissions": true,
+       "modify users": true
      }
   }, 
   {  
@@ -44,6 +45,9 @@ module.exports = [
     password: "1234",
     inviteCode: "h4x0r",
     email: "cronopio@nodejitsu.com",
-    status: "new"
+    status: "new",
+    permissions: {
+     "modify users": true
+   }
   }
 ];

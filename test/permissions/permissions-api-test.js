@@ -43,4 +43,5 @@ apiEasy.describe('http-users/permissions/api')
   .next()
   .get('permissions/second permission')
     .expect(404)
+  .addBatch(macros.requireStop(app))
   .export(module);

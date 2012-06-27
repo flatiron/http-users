@@ -26,6 +26,20 @@ macros.requireStart = function (app) {
   };
 };
 
+macros.requireStop = function (app) {
+  return {
+    "Once the app is stopped": {
+      topic: function () {
+        app.server.on('close', this.callback);
+        app.server.close();
+      },
+      "it should stop to listen connections": function () {
+        assert.ok(true);
+      }
+    }
+  }
+};
+
 macros.destroyDb = function (app) {
   return {
     "Setting up the tests": {

@@ -29,7 +29,7 @@ vows.describe('http-users/couchdb/permissions')
         "should respond with all permissions": function (err, perms) {
           assert.isNull(err);
           assert.isArray(perms);
-          assert.lengthOf(perms, 4);
+          assert.lengthOf(perms, 5);
         }
       },
       "the create() method": {
@@ -173,4 +173,5 @@ vows.describe('http-users/couchdb/permissions')
       }
     }
   })
+  .addBatch(macros.requireStop(app))
   .export(module);
