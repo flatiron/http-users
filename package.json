@@ -13,7 +13,7 @@
   "peerDependencies": {
     "flatiron": "~0.2.1",
     "director": "~1.0.11",
-    "restful": "~0.1.1"
+    "restful": "~0.2.0"
   },
   "dependencies": {
     "basic-auth-parser": "0.0.x",
@@ -24,12 +24,12 @@
     "node_hash": "0.2.x",
     "director": "~1.0.11",
     "director-explorer": "0.0.1",
-    "resourceful": "0.1.x",
     "flatiron": "~0.2.1",
-    "restful": "~0.1.1",
+    "nano": "*",
+    "resourceful": "~0.2.0",
+    "restful": "~0.2.0",
     "union": "0.3.x",
-    "vows": "0.6.x",
-    "nano": "*"
+    "vows": "0.6.x"
   },
   "main": "./lib/http-users",
   "publishConfig": {
