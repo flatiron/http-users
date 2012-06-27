@@ -9,7 +9,6 @@ var director = require('director'),
     de = require('director-explorer'),
     flatiron = require('flatiron'),
     restful  = require('restful'),
-    resourceful = require('resourceful'),
     httpUsers = require('../../../lib/http-users');
 
 var app = module.exports = flatiron.app;
