@@ -151,7 +151,6 @@ apiEasy.describe('http-users/user/api')
     .post('/users/silly-user/forgot')
     .expect(200)
   .undiscuss()
-
   .discuss('confirmation by superuser')
     .post('/users/maciej/confirm')
       .expect(200)
@@ -164,7 +163,6 @@ apiEasy.describe('http-users/user/api')
         assert.equal(body.user.status, 'pending');
       })
   .undiscuss()
-
   .discuss('confirmation by user')
     .authenticate('daniel', '1234')
     .post('/users/daniel/confirm', { inviteCode: 'h4x0r' })
@@ -178,5 +176,9 @@ apiEasy.describe('http-users/user/api')
         assert.equal(body.user.status, 'active');
       })
     .unauthenticate()
+  .discuss('should be able to authenticate with a new password')
+    .authenticate('silly-user', 'secretpassword')
+    .get('/auth')
+      .expect(200)
   .undiscuss()
 .export(module);

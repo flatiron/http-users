@@ -2,6 +2,7 @@
 var assert = require('assert'),
     path = require('path'),
     vows = require('vows'),
+    hash = require('node_hash'),
     macros = require('./index');
 
 var key = '012345678901234567890123456789',
@@ -28,6 +29,9 @@ module.exports = function (suite, app) {
           assert.equal(user.username, 'newuser');
           // using default options not require ativation so
           assert.equal(user.state, 'active');
+          assert.isString(user.password);
+          assert.isString(user['password-salt']);
+          assert.equal(user.password, hash.md5('1234', user['password-salt']));
           newuser = user;
         }
       },
@@ -56,6 +60,20 @@ module.exports = function (suite, app) {
             assert.isNull(err);
             assert.isFalse(res);
           }
+        }
+      }
+    }
+  }).addBatch({
+    "The User resource": {
+      "the `setPassword()` method": {
+        topic: function () {
+          newuser.setPassword('4321');
+          this.callback();
+        },
+        "should set the password": function () {
+          assert.isString(newuser.password);
+          assert.isString(newuser['password-salt']);
+          assert(newuser.password === hash.md5('4321', newuser['password-salt']));
         }
       }
     }
