@@ -43,7 +43,7 @@ apiEasy.describe('http-users/user/api')
       assert.isNull(err);
       assert.isObject(result);
       assert.isArray(result.users);
-      assert.lengthOf(result.users, 5);
+      assert.lengthOf(result.users, 7);
     })
   .get('/users/devjitsu')
     .expect(200)
@@ -150,5 +150,33 @@ apiEasy.describe('http-users/user/api')
   .discuss('but without other parameters (a new reset request)')
     .post('/users/silly-user/forgot')
     .expect(200)
+  .undiscuss()
+
+  .discuss('confirmation by superuser')
+    .post('/users/maciej/confirm')
+      .expect(200)
+    .next()
+    .get('/users/maciej')
+      .expect(200)
+      .expect('user to be `active`', function (err, res, body) {
+        assert.isNull(err);
+        body = JSON.parse(body);
+        assert.equal(body.user.status, 'pending');
+      })
+  .undiscuss()
+
+  .discuss('confirmation by user')
+    .authenticate('daniel', '1234')
+    .post('/users/daniel/confirm', { inviteCode: 'h4x0r' })
+      .expect(200)
+    .next()
+    .get('/users/daniel')
+      .expect(200)
+      .expect('user to be `active`', function (err, res, body) {
+        assert.isNull(err);
+        body = JSON.parse(body);
+        assert.equal(body.user.status, 'active');
+      })
+    .unauthenticate()
   .undiscuss()
 .export(module);
