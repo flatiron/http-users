@@ -34,7 +34,7 @@ module.exports = function (suite, app) {
           //
           // using default options not require ativation so
           //
-          assert.equal(user.state, 'active');
+          assert.equal(user.status, 'active');
           assert.isString(user.password);
           assert.isString(user['password-salt']);
           assert.equal(user.password, hash.md5('1234', user['password-salt']));
