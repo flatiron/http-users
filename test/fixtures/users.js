@@ -46,5 +46,12 @@ module.exports = [
     inviteCode: "h4x0r",
     email: "cronopio@nodejitsu.com",
     status: "new"
+  },
+  {
+    resource: "User",
+    username: "testconfirm",
+    password: "1234",
+    email: "testconfirm@testing.com",
+    status: "new"
   }
 ];

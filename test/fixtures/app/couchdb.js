@@ -70,9 +70,7 @@ app.use(flatiron.plugins.resourceful, {
   port: 5984
 });
 
-app.use(httpUsers, {
-  unauthorized: ['create']
-});
+app.use(httpUsers);
 
 //
 // This will expose all resources as restful routers
