@@ -34,6 +34,19 @@ apiEasy.describe('http-users/user/api')
     .undiscuss()
   .discuss('confirmation by non-superuser')
     .authenticate('daniel', '1234')
+    .discuss('with no invite code')
+    .post('/users/daniel/confirm', {})
+      .expect(400)
+    .next()
+      .get('/users/daniel')
+        .expect(200)
+        .expect('user to be still `new`', function (err, res, body) {
+          assert.isNull(err);
+          body = JSON.parse(body);
+          assert.equal(body.user.status, 'new');
+        })
+    .undiscuss()
+    .next()
     .discuss('with invite code')
     .post('/users/daniel/confirm', { inviteCode: 'h4x0r' })
       .expect(200)
