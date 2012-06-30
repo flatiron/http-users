@@ -50,7 +50,7 @@ apiEasy.describe('http-users/user/api')
       assert.isNull(err);
       assert.isObject(result);
       assert.isArray(result.users);
-      assert.lengthOf(result.users, 8);
+      assert.lengthOf(result.users, 9);
     })
   .get('/users/devjitsu')
     .expect(200)
