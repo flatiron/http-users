@@ -4,11 +4,14 @@
   "description": "Encapsulated routes and resources for managing users in flatiron HTTP apps",
   "author": "Nodejitsu Inc <info@nodejitsu.com>",
   "contributors": [
-    { "name": "Charlie Robbins", "email": "charlie@nodejitsu.com" }
+    {
+      "name": "Charlie Robbins",
+      "email": "charlie@nodejitsu.com"
+    }
   ],
   "repository": {
     "type": "git",
-    "url": "http://github.com/flatiron/http-users.git" 
+    "url": "http://github.com/flatiron/http-users.git"
   },
   "peerDependencies": {
     "flatiron": "~0.2.1",
@@ -39,6 +42,7 @@
   "scripts": {
     "test": "vows test/*-test.js test/**/*-test.js --spec --i"
   },
-  "engines": { "node": ">= 0.6.0" }
+  "engines": {
+    "node": ">= 0.6.0"
+  }
 }
-
