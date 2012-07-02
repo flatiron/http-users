@@ -26,7 +26,7 @@ apiEasy.describe('http-users/user/api')
     .next()
     .get('/users/maciej')
       .expect(200)
-      .expect('user to be `active`', function (err, res, body) {
+      .expect('user to be `pending`', function (err, res, body) {
         assert.isNull(err);
         body = JSON.parse(body);
         assert.equal(body.user.status, 'pending');
