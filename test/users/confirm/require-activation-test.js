@@ -1,5 +1,5 @@
 /*
- * users-api-confirm-test.js: Tests for confirmation in the RESTful users API.
+ * require-activation-test.js: Tests for confirmation with `{ 'user:require-activation': true }`.
  *
  * (C) 2010, Nodejitsu Inc.
  *
@@ -7,14 +7,14 @@
 
 var assert = require('assert'),
     apiEasy = require('api-easy'),
-    macros  = require('../macros'),
-    app     = require('../fixtures/app/couchdb');
+    macros  = require('../../macros'),
+    app     = require('../../fixtures/app/couchdb');
     
 var port = 8080;
 
 app.config.set('user:require-activation', true);
 
-apiEasy.describe('http-users/user/api')
+apiEasy.describe('http-users/user/api/confirm/require-activation')
   .addBatch(macros.requireStart(app))
   .addBatch(macros.seedDb(app))
   .use('localhost', port)

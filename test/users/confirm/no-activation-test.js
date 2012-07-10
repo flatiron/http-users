@@ -1,0 +1,79 @@
+/*
+ * no-activation-test.js: Tests for confirmation with `{ 'user:require-activation': false }`.
+ *
+ * (C) 2010, Nodejitsu Inc.
+ *
+ */
+
+var assert = require('assert'),
+    apiEasy = require('api-easy'),
+    macros  = require('../../macros'),
+    app     = require('../../fixtures/app/couchdb');
+    
+var port = 8080;
+
+apiEasy.describe('http-users/user/api/confirm/no-activation')
+  .addBatch(macros.requireStart(app))
+  .addBatch(macros.seedDb(app, { activation: false }))
+  .use('localhost', port)
+  .setHeader('Content-Type', 'application/json')
+  .authenticate('charlie', '1234')
+  .discuss('confirmation by superuser')
+    .post('/users/maciej/confirm')
+      .expect(200)
+    .next()
+    .get('/users/maciej')
+      .expect(200)
+      .expect('user to be `active`', function (err, res, body) {
+        assert.isNull(err);
+        body = JSON.parse(body);
+        assert.equal(body.user.status, 'active');
+      })
+    .undiscuss()
+  .discuss('confirmation by non-superuser')
+    .authenticate('daniel', '1234')
+    .discuss('with no invite code')
+    .post('/users/daniel/confirm', {})
+      .expect(400)
+    .next()
+      .authenticate('charlie', '1234')
+      .get('/users/daniel')
+        .expect(200)
+        .expect('user to be still `pending`', function (err, res, body) {
+          assert.isNull(err);
+          body = JSON.parse(body);
+          assert.equal(body.user.status, 'pending');
+        })
+    .undiscuss()
+    .next()
+    .authenticate('daniel', '1234')
+    .discuss('with invite code')
+    .post('/users/daniel/confirm', { inviteCode: 'h4x0r' })
+      .expect(200)
+    .next()
+      .get('/users/daniel')
+        .expect(200)
+        .expect('user to be `active`', function (err, res, body) {
+          assert.isNull(err);
+          body = JSON.parse(body);
+          assert.equal(body.user.status, 'active');
+        })
+    .undiscuss()
+  .next()
+    .discuss('attempt to authenticate another user')
+    .post('/users/testconfirm/confirm', {})
+      .expect(400)
+      .expect('should respond with `Invalid Invite Code`', function (err, res, body) {
+        assert.isNull(err);
+        assert.equal(JSON.parse(body).error, 'Invalid Invite Code');
+      })
+    .next()
+    .authenticate('charlie', '1234')
+    .get('/users/testconfirm')
+      .expect('should not change the user status', function (err, res, body) {
+        assert.isNull(err);
+        var result = JSON.parse(body);
+        assert.isObject(result.user);
+        assert.equal(result.user.status, 'pending');
+      })
+  .export(module);

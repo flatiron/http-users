@@ -40,7 +40,7 @@
     "registry": "http://reg.njitsu.net:5984"
   },
   "scripts": {
-    "test": "vows test/*-test.js test/**/*-test.js --spec --isolate"
+    "test": "vows test/*-test.js test/**/*-test.js test/**/**/*-test.js --spec --isolate"
   },
   "engines": {
     "node": ">= 0.6.0"

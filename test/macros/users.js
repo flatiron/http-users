@@ -39,6 +39,7 @@ module.exports = function (suite, app) {
           // using default options not require ativation so
           //
           assert.equal(user.status, 'pending');
+          assert.isString(user.inviteCode);
           assert.isString(user.password);
           assert.isString(user['password-salt']);
           assert.equal(user.password, hash.md5('1234', user['password-salt']));
@@ -105,7 +106,7 @@ module.exports = function (suite, app) {
   }).addBatch({
     "The User resource": {
       topic: function () {
-        app.resources.User.get('user/juan', this.callback);
+        app.resources.User.get('juan', this.callback);
       },
       "with a key": {
         topic: function (user) {
