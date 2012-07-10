@@ -60,6 +60,7 @@ apiEasy.describe('http-users/user/api')
       assert.isObject(result);
       assert.isObject(result.user);
       assert.equal(result.user.username, 'devjitsu');
+      assert.isString(result.user.inviteCode)
     })
   .get('/users/noob')
     .expect(404)
@@ -75,6 +76,7 @@ apiEasy.describe('http-users/user/api')
       assert.isObject(result.user);
       assert.equal(result.user.username, 'devjitsu');
       assert.equal(result.user.email, 'working@test.com');
+      assert.isString(result.user.inviteCode);
     })
   .post('/users/testjitsu', {
     username: 'testjitsu',
