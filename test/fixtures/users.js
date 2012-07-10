@@ -51,6 +51,7 @@ module.exports = [
     resource: "User",
     username: "testconfirm",
     password: "1234",
+    inviteCode: "must-have-this",
     email: "testconfirm@testing.com",
     status: "new"
   }

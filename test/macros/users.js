@@ -26,20 +26,25 @@ module.exports = function (suite, app) {
           }, this.callback)
         },
         "should respond with the appropriate object": function (err, user) {
+
+          // Expose it first thing, in case some assertions fail.
+          newuser = user;
+
           assert.isNull(err);
           assert.isObject(user);
           assert.equal(user.email, 'foo@bar.com');
           assert.equal(user.username, 'newuser');
-          
+
           //
           // using default options not require ativation so
           //
-          assert.equal(user.status, 'active');
+          assert.equal(user.status, 'pending');
+          assert.isString(user.inviteCode);
           assert.isString(user.password);
           assert.isString(user['password-salt']);
           assert.equal(user.password, hash.md5('1234', user['password-salt']));
           assert.isObject(user.permissions);
-          newuser = user;
+
         }
       },
       "the available() method": {
@@ -101,7 +106,7 @@ module.exports = function (suite, app) {
   }).addBatch({
     "The User resource": {
       topic: function () {
-        app.resources.User.get('user/juan', this.callback);
+        app.resources.User.get('juan', this.callback);
       },
       "with a key": {
         topic: function (user) {

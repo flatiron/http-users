@@ -70,7 +70,9 @@ macros.createDb = function (app) {
   };
 };
 
-macros.seedDb = function (app) {
+macros.seedDb = function (app, options) {
+  options = options || { activation: true };
+
   return {
     "Setting up the tests": {
       "seeding the couch database": {
@@ -116,6 +118,10 @@ macros.seedDb = function (app) {
                 user['password-salt'] = user['password-salt'] || common.randomString(16);
                 user.password = user.password || '';
                 user.password = hash.md5(user.password, user['password-salt']);
+
+                if (!options.activation && user.status === 'new') {
+                  user.status = 'pending';
+                }
               });
               
               nano.db.use(name).bulk(

@@ -1,5 +1,5 @@
 /*
- * users-api-confirm-test.js: Tests for confirmation in the RESTful users API.
+ * require-activation-test.js: Tests for confirmation with `{ 'user:require-activation': true }`.
  *
  * (C) 2010, Nodejitsu Inc.
  *
@@ -7,14 +7,14 @@
 
 var assert = require('assert'),
     apiEasy = require('api-easy'),
-    macros  = require('../macros'),
-    app     = require('../fixtures/app/couchdb');
+    macros  = require('../../macros'),
+    app     = require('../../fixtures/app/couchdb');
     
 var port = 8080;
 
-app.config.set('users:require-activation', true);
+app.config.set('user:require-activation', true);
 
-apiEasy.describe('http-users/user/api')
+apiEasy.describe('http-users/user/api/confirm/require-activation')
   .addBatch(macros.requireStart(app))
   .addBatch(macros.seedDb(app))
   .use('localhost', port)
@@ -38,6 +38,7 @@ apiEasy.describe('http-users/user/api')
     .post('/users/daniel/confirm', {})
       .expect(400)
     .next()
+      .authenticate('charlie', '1234')
       .get('/users/daniel')
         .expect(200)
         .expect('user to be still `new`', function (err, res, body) {
@@ -47,6 +48,7 @@ apiEasy.describe('http-users/user/api')
         })
     .undiscuss()
     .next()
+    .authenticate('daniel', '1234')
     .discuss('with invite code')
     .post('/users/daniel/confirm', { inviteCode: 'h4x0r' })
       .expect(200)
@@ -68,11 +70,10 @@ apiEasy.describe('http-users/user/api')
         assert.equal(JSON.parse(body).error, 'Invalid Invite Code');
       })
     .next()
-    .authenticate('testconfirm', '1234')
+    .authenticate('charlie', '1234')
     .get('/users/testconfirm')
       .expect('should not change the user status', function (err, res, body) {
         assert.isNull(err);
-        
         var result = JSON.parse(body);
         assert.isObject(result.user);
         assert.equal(result.user.status, 'new');

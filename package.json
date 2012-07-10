@@ -14,7 +14,7 @@
     "url": "http://github.com/flatiron/http-users.git"
   },
   "peerDependencies": {
-    "flatiron": "~0.2.1",
+    "flatiron": "~0.2.5",
     "director": "~1.1.0",
     "restful": "~0.2.0"
   },
@@ -28,7 +28,7 @@
     "node_hash": "0.2.x",
     "director": "~1.0.11",
     "director-explorer": "0.0.1",
-    "flatiron": "~0.2.1",
+    "flatiron": "~0.2.5",
     "nano": "*",
     "resourceful": "~0.2.1",
     "restful": "~0.2.0",
@@ -40,7 +40,7 @@
     "registry": "http://reg.njitsu.net:5984"
   },
   "scripts": {
-    "test": "vows test/*-test.js test/**/*-test.js --spec --isolate"
+    "test": "vows test/*-test.js test/**/*-test.js test/**/**/*-test.js --spec --isolate"
   },
   "engines": {
     "node": ">= 0.6.0"
