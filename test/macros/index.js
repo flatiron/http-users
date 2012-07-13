@@ -4,7 +4,8 @@ var assert = require('assert'),
     async = common.async,
     hash = require('node_hash'),
     permissions = require('../fixtures/permissions'),
-    users = require('../fixtures/users');
+    users = require('../fixtures/users'),
+    organizations = require('../fixtures/organizations');
 
 //
 // Use nano to help bootstrap couch for testing
@@ -78,7 +79,7 @@ macros.seedDb = function (app, options) {
       "seeding the couch database": {
         topic: function () {
           var name = app.config.get('resourceful:database');
-          
+
           async.series([
             //
             // 1. Destroy the database
@@ -107,12 +108,12 @@ macros.seedDb = function (app, options) {
             //
             function insertDocs(next) {
               permissions.forEach(function (perm) {
-                perm.ctime = perm.mtime = +(new Date()); 
+                perm.ctime = perm.mtime = +(new Date());
                 perm._id = ['permission', perm.name].join('/');
               });
-              
+
               users.forEach(function (user) {
-                user.ctime = user.mtime = +(new Date()); 
+                user.ctime = user.mtime = +(new Date());
                 user._id = ['user', user.username].join('/');
 
                 user['password-salt'] = user['password-salt'] || common.randomString(16);
@@ -123,9 +124,16 @@ macros.seedDb = function (app, options) {
                   user.status = 'pending';
                 }
               });
-              
+
+              organizations.forEach(function (org) {
+                org.ctime = org.mtime = +(new Date());
+                org._id = ['organization', org.name].join('/');
+                org.members = org.members || [];
+                org.members[0] = org.members[0] || org.owner;
+              });
+
               nano.db.use(name).bulk(
-                { docs: permissions.concat(users) }, 
+                { docs: permissions.concat(users).concat(organizations) },
                 next
               );
             }
@@ -141,5 +149,6 @@ macros.seedDb = function (app, options) {
 
 macros.resources = {
   users: require('./users'),
+  organizations: require('./organizations'),
   permissions: require('./permissions')
 };
