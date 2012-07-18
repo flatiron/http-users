@@ -14,6 +14,8 @@ var port = 8080;
 
 apiEasy.describe('http-users/organization/api')
   .addBatch(macros.requireStart(app))
+  .addBatch(macros.destroyDb(app))
+  //.addBatch(macros.createDb(app))
   .addBatch(macros.seedDb(app))
   .use('localhost', port)
   .setHeader('Content-Type', 'application/json')
@@ -26,14 +28,19 @@ apiEasy.describe('http-users/organization/api')
       var result = JSON.parse(body);
       assert.isDefined(result.error);
     })
-  .get('/organizations/devjitsu', {})
+  .get('/organizations/devjitsu')
     .expect(200)
     .expect('should respond with organization object', function (err, res, body) {
       assert.isNull(err);
       var result = JSON.parse(body);
       assert.equal(result.owner, 'charlie');
     })
-  .put('/organizations/devjitsu2', {})
+  .put('/organizations/devjitsu', {})
+    .expect(500)
+    .expect('should show an error', function (err, res, body) {
+      assert.isNull(err);
+    })
+  .put('/organizations/devjitsu-new', {})
     .expect(200)
     .expect('should respond with organization object', function (err, res, body) {
       assert.isNull(err);
@@ -42,22 +49,34 @@ apiEasy.describe('http-users/organization/api')
       assert.isDefined(result.owner);
       assert.equal(result.owner, 'charlie');
     })
-  .put('/organizations/devjitsu2/marak', {})
+  .put('/organizations/devjitsu/marak', {})
     .expect(200)
-    .expect('should add marak to devjitsu2', function (err, res, body) {
+    .expect('should add marak to devjitsu', function (err, res, body) {
       assert.isNull(err);
       var result = JSON.parse(body);
-      assert.lengthOf(result.members, 2);
-      assert.equal(result.members[1], 'marak');
+      assert.lengthOf(result.members, 3);
+      assert.equal(result.members[2], 'marak');
     })
-  .put('/organizations/devjitsu2/non-existent', {})
+  .put('/organizations/non-existent/marak', {})
     .expect(500)
     .expect('should show an error', function (err, res, body) {
       assert.isNull(err);
     })
-  .delete('/organizations/devjitsu2/marak', {})
+  .put('/organizations/devjitsu/non-existent', {})
+    // TODO: add this behavior:
+    //.expect(500)
     .expect(200)
-    .expect('should remove marak from devjitsu2', function (err, res, body) {
+    .expect('should show an error', function (err, res, body) {
+      assert.isNull(err);
+    })
+  .del('/organizations/devjitsu/charlie', {})
+    .expect(403)
+    .expect('should not remove charlie from devjitsu', function (err, res, body) {
+      assert.isNull(err);
+    })
+  .del('/organizations/devjitsu/maciej', {})
+    .expect(200)
+    .expect('should remove other from devjitsu', function (err, res, body) {
       assert.isNull(err);
     })
   .put('/organizations/devjitsu2/elijah', {})
@@ -65,28 +84,23 @@ apiEasy.describe('http-users/organization/api')
     .expect('should add user to organization', function (err, res, body) {
       assert.isNull(err);
       var result = JSON.parse(body);
-      assert.lengthOf(result.members, 2);
-      assert.equal(result.members[1], 'elijah');
+      assert.lengthOf(result.members, 3);
+      assert.equal(result.members[2], 'elijah');
     })
-  .get('/organizations/devjitsu2', {})
+  .post('/organizations/devjitsu/marak', {})
     .expect(200)
-    .expect('should show updated devjitsu2', function (err, res, body) {
+    .expect('should give marak permissions to devjitsu', function (err, res, body) {
       assert.isNull(err);
-      var result = JSON.parse(body);
-      assert.lengthOf(result.members, 2);
-      assert.equal(result.members[1], 'elijah');
     })
-  .delete('/organizations/devjitsu2', {})
+  .del('/organizations/non-existent', {})
+    .expect(500)
+    .expect('should show an error', function (err, res, body) {
+      assert.isNull(err);
+    })
+  .del('/organizations/devjitsu3', {})
     .expect(200)
     .expect('should delete organization', function (err, res, body) {
       assert.isNull(err);
-    })
-  .get('/organizations/devjitsu2', {})
-    .expect(500)
-    .expect('should respond with an error', function (err, res, body) {
-      assert.isNull(err);
-      var result = JSON.parse(body);
-      assert.isDefined(result.error);
     })
   .addBatch(macros.requireStop(app))
   .export(module);
