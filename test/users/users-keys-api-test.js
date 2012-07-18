@@ -28,11 +28,10 @@ apiEasy.describe('http-users/user/api/keys')
     .expect('should respond with the specified key', function (err, res, body) {
       var result = JSON.parse(body)
       assert.isObject(result);
-      assert.isArray(result.keys);
-      assert.isObject(result.keys[0]);
-      assert.include(result.keys[0], 'username');
-      assert.include(result.keys[0], 'name');
-      assert.include(result.keys[0], 'key');
+      assert.isObject(result.key);
+      assert.include(result.key, 'username');
+      assert.include(result.key, 'name');
+      assert.include(result.key, 'key');
     })
   .get('/users/charlie/keys')
     .expect(200)
@@ -52,6 +51,9 @@ apiEasy.describe('http-users/user/api/keys')
       var result = JSON.parse(body); 
       assert.isObject(result);
       assert.isArray(result.keys);
-      assert.lengthOf(result.keys, 2);
+      assert.lengthOf(result.keys, 1);
+      result.keys.forEach(function (key) {
+        assert.equal(key.username, 'elijah');
+      })
     })
 .export(module);
