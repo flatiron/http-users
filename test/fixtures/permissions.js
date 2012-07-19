@@ -23,10 +23,5 @@ module.exports = [
     resource: 'Permission',
     name: 'modify users',
     type: 'boolean'
-  },
-  {
-    resource: 'Permission',
-    name: 'modify organization',
-    type: 'array'
   }
 ];
