@@ -2,19 +2,19 @@ module.exports = [
   {
      resource: "Organization",
      name: "devjitsu",
-     owner: "charlie",
+     owners: ["charlie"],
      members: ["charlie","maciej"]
   },
   {
      resource: "Organization",
      name: "devjitsu2",
-     owner: "charlie",
+     owners: ["charlie"],
      members: ["charlie","marak"]
   },
   {
      resource: "Organization",
      name: "devjitsu3",
-     owner: "charlie",
+     owners: ["charlie"],
      members: ["charlie","elijah"]
   }
 ];

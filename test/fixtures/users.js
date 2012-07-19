@@ -4,16 +4,7 @@ module.exports = [
      username: "charlie",
      password: "1234",
      email: "charlie.robbins@gmail.com",
-     status: "active",
-     permissions: {
-       "modify permissions": true,
-       "modify users": true,
-       "modify organization": [
-         "devjitsu",
-         "devjitsu2",
-         "devjitsu3"
-       ]
-     }
+     status: "active"
   },
   {
      resource: "User",
@@ -66,14 +57,6 @@ module.exports = [
     password: "1234",
     inviteCode: "loudnoises",
     email: "chjj@nodejitsu.com",
-    status: "active",
-    permissions: {
-      "modify organization": [
-        "devjitsu",
-        "devjitsu2",
-        "devjitsu3",
-        "devjitsu4"
-      ]
-    }
+    status: "active"
   }
 ];
