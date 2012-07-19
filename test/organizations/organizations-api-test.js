@@ -51,7 +51,7 @@ apiEasy.describe('http-users/organization/api')
     })
   .put('/organizations/devjitsu/marak', {})
     .expect(200)
-    .expect('should add marak to devjitsu', function (err, res, body) {
+    .expect('should add user to devjitsu', function (err, res, body) {
       assert.isNull(err);
       var result = JSON.parse(body);
       assert.lengthOf(result.members, 3);
@@ -63,20 +63,18 @@ apiEasy.describe('http-users/organization/api')
       assert.isNull(err);
     })
   .put('/organizations/devjitsu/non-existent', {})
-    // TODO: add this behavior:
-    //.expect(500)
-    .expect(200)
+    .expect(500)
     .expect('should show an error', function (err, res, body) {
       assert.isNull(err);
     })
   .del('/organizations/devjitsu/charlie', {})
     .expect(403)
-    .expect('should not remove charlie from devjitsu', function (err, res, body) {
+    .expect('should not remove user from devjitsu', function (err, res, body) {
       assert.isNull(err);
     })
   .del('/organizations/devjitsu/maciej', {})
     .expect(200)
-    .expect('should remove other from devjitsu', function (err, res, body) {
+    .expect('should remove user from devjitsu', function (err, res, body) {
       assert.isNull(err);
     })
   .put('/organizations/devjitsu2/elijah', {})
@@ -89,7 +87,7 @@ apiEasy.describe('http-users/organization/api')
     })
   .post('/organizations/devjitsu/marak', {})
     .expect(200)
-    .expect('should give marak permissions to devjitsu', function (err, res, body) {
+    .expect('should give user permissions to devjitsu', function (err, res, body) {
       assert.isNull(err);
     })
   .del('/organizations/non-existent', {})
