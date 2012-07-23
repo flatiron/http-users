@@ -149,6 +149,5 @@ macros.seedDb = function (app, options) {
 
 macros.resources = {
   users: require('./users'),
-  organizations: require('./organizations'),
   permissions: require('./permissions')
 };
