@@ -9,7 +9,7 @@ var assert = require('assert'),
     apiEasy = require('api-easy'),
     macros  = require('../macros'),
     app     = require('../fixtures/app/couchdb');
-    
+
 var port = 8080;
 
 apiEasy.describe('http-users/user/api')
@@ -50,7 +50,7 @@ apiEasy.describe('http-users/user/api')
       assert.isNull(err);
       assert.isObject(result);
       assert.isArray(result.users);
-      assert.lengthOf(result.users, 9);
+      assert.lengthOf(result.users, 10);
     })
   .get('/users/devjitsu')
     .expect(200)
