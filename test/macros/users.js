@@ -143,12 +143,12 @@ module.exports = function (suite, app) {
         "should respond with all users": function (err, users) {
           assert.isNull(err);
           assert.isArray(users);
-          assert.lengthOf(users, 9);
+          assert.lengthOf(users, 10);
         }
       }
     }
   }).addBatch({
-    "The User resource": {  
+    "The User resource": {
       "the keynames() method": {
         topic: function () {
           app.resources.User.keynames(this.callback);
@@ -159,7 +159,7 @@ module.exports = function (suite, app) {
           assert.lengthOf(keynames, 2);
           assert.equal(keynames[0]._id, 'user/juan');
           assert.equal(keynames[1]._id, 'user/newuser');
-        }    
+        }
       },
       "the keys() method": {
         topic: function () {
