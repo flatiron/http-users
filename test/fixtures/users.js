@@ -4,7 +4,11 @@ module.exports = [
      username: "charlie",
      password: "1234",
      email: "charlie.robbins@gmail.com",
-     status: "active"
+     status: "active",
+     permissions: {
+       "modify permissions": true,
+       "modify users": true
+     }
   },
   {
      resource: "User",
