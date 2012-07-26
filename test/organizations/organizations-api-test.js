@@ -100,5 +100,42 @@ apiEasy.describe('http-users/organization/api')
     .expect('should delete organization', function (err, res, body) {
       assert.isNull(err);
     })
+  .undiscuss()
+  .discuss('Destroy user should destroy organization')
+  .post('/users/willdestroy', { email: 'will@destroy.com', password: '1234'})
+    .expect(201)
+    .expect('should respond with the user', function (err, res, body) {
+      var result = JSON.parse(body).user;
+      assert.isNull(err);
+      assert.isObject(result);
+      assert.equal(result.username, 'willdestroy');
+    })
+  .next()
+  .unauthenticate()
+  .authenticate('willdestroy', '1234')
+  .post('/organizations/willorg', {})
+    .expect(200)
+    .expect('should respond with organization object', function (err, res, body) {
+      assert.isNull(err);
+      var result = JSON.parse(body);
+      assert.isNotNull(result);
+      assert.isDefined(result.owners);
+      assert.equal(result.owners[0], 'willdestroy');
+    })
+  .unauthenticate()
+  .authenticate('charlie', '1234')
+  .next()
+  .del('/users/willdestroy')
+    .expect(204)
+    .expect('should delete user', function (err, res, body) {
+      assert.isNull(err);
+    })
+  .next()
+  .get('/organizations/willorg')
+    .expect(404)
+    .expect('should delete organization', function (err, res, body) {
+      assert.isNull(err);
+    })
+  .undiscuss()
   .addBatch(macros.requireStop(app))
   .export(module);
