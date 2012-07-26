@@ -170,4 +170,60 @@ vows
     }
   }
 })
+.addBatch({
+  'The Organization resource': {
+    'creating a user': {
+      topic: function () {
+        app.resources.User.create({
+          _id: 'user/destroyme',
+          name: 'destroyme',
+          email: 'destroy@me.com'
+        }, this.callback);
+      },
+      'should be created correctly': function (err, user) {
+        assert.isNull(err);
+        assert.ok(user);
+        assert.equal(user.resource, 'User');
+        assert.equal(user.username, 'destroyme');
+        assert.equal(user._id, 'user/destroyme');
+      },
+      'creating a organization': {
+        topic: function (user) {
+          app.resources.Organization.create({
+            _id: 'organization/devjitsu5',
+            name: 'devjitsu5',
+            owners: [user.username],
+            members: [user.username]
+          }, this.callback);
+        },
+        'should be created correctly': function (err, org) {
+          assert.isNull(err);
+          assert.ok(org);
+          assert.equal(org.resource, 'Organization');
+          assert.equal(org.name, 'devjitsu5');
+          assert.lengthOf(org.owners, 1);
+          assert.lengthOf(org.members, 1);
+        },
+        'and destroy de user': {
+          topic: function (organization, user) {
+            user.destroy(this.callback)
+          },
+          'should be destroyed correctly': function (err, res) {
+            assert.isNull(err);
+            assert.ok(res.ok);
+          },
+          'should be destroy the organization too': {
+            topic: function () {
+              app.resources.Organization.available('devjitsu5', this.callback);
+            },
+            'should left the name available': function (err, res) {
+              assert.isNull(err);
+              assert.ok(res);
+            }
+          }
+        }
+      }
+    }
+  }
+})
 .export(module);
