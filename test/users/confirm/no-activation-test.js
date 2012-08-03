@@ -1,5 +1,5 @@
 /*
- * no-activation-test.js: Tests for confirmation with `{ 'user:require-activation': false }`.
+ * no-activation-test.js: Tests for confirmation with `{ 'user:require-activation': false, 'user:require-confirm': true }`.
  *
  * (C) 2010, Nodejitsu Inc.
  *
@@ -11,6 +11,8 @@ var assert = require('assert'),
     app     = require('../../fixtures/app/couchdb');
     
 var port = 8080;
+
+app.config.set('user:require-confirm', true);
 
 apiEasy.describe('http-users/user/api/confirm/no-activation')
   .addBatch(macros.requireStart(app))

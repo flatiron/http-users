@@ -38,7 +38,7 @@ module.exports = function (suite, app) {
           //
           // using default options not require ativation so
           //
-          assert.equal(user.status, 'pending');
+          assert.equal(user.status, 'active');
           assert.isString(user.inviteCode);
           assert.isString(user.password);
           assert.isString(user['password-salt']);

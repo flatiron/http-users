@@ -1,5 +1,5 @@
 /*
- * require-activation-test.js: Tests for confirmation with `{ 'user:require-activation': true }`.
+ * require-activation-test.js: Tests for confirmation with `{ 'user:require-activation': true, 'user:require-confirm': true }`.
  *
  * (C) 2010, Nodejitsu Inc.
  *
@@ -13,6 +13,7 @@ var assert = require('assert'),
 var port = 8080;
 
 app.config.set('user:require-activation', true);
+app.config.set('user:require-confirm', true);
 
 apiEasy.describe('http-users/user/api/confirm/require-activation')
   .addBatch(macros.requireStart(app))
