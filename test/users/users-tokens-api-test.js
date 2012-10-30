@@ -18,6 +18,7 @@ apiEasy.describe('http-users/user/api/tokens')
   .addBatch(macros.seedDb(app))
   .use('localhost', port)
   .setHeader('Content-Type', 'application/json')
+  // charlie is an admin user
   .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
   .put('/users/charlie/tokens/test-token', {})
     .expect(201)
@@ -35,8 +36,9 @@ apiEasy.describe('http-users/user/api/tokens')
       assert.isObject(result.apiTokens);
     })
   .next()
-  .setHeader('Authorization', 'Basic ' + base64.encode('charlie:token123'))
-  .get('/users/charlie/tokens')
+  // maciej is a non admin user
+  .setHeader('Authorization', 'Basic ' + base64.encode('maciej:1234'))
+  .get('/users/maciej/tokens')
     .expect(200)
     .expect('should respond with all tokens for the user', function (err, res, body) {
       var result = JSON.parse(body); 
@@ -45,10 +47,9 @@ apiEasy.describe('http-users/user/api/tokens')
     })
   .next()
   .get('/users/elijah/tokens')
-    .expect(401)
+    .expect(403)
     .expect('should not have permissions to see other tokens', function (err, res, body) {
-      var result = JSON.parse(body); 
-      assert.isObject(err);
-      assert.isNull(body);
+      assert.isNull(err);
+      assert.equal(body.trim(), "Not authorized to modify users");
     })
 ["export"](module);
