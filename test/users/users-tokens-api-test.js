@@ -226,4 +226,10 @@ apiEasy.describe('http-users/user/api/tokens')
       assert.equal(Object.keys(result.apiTokens).length, 1);
     })
   .next()
+  //
+  // With a token we should not be able to access organizations
+  //
+  .get('/organizations', {})
+    .expect(403)
+  .next()
 ["export"](module);
