@@ -21,8 +21,9 @@ apiEasy.describe('http-users/user/api/tokens')
   .setHeader('Content-Type', 'application/json')
   //
   // Charlie is an admin user
+  // Using a seeded api token for auth
   //
-  .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
+  .setHeader('Authorization', 'Basic ' + base64.encode('charlie:token123'))
   //
   // Add a named token
   //
