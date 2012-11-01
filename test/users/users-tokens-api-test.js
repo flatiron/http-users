@@ -139,21 +139,10 @@ apiEasy.describe('http-users/user/api/tokens')
     .expect(403)
   .next()
   //
-  // Get all tokens, should not include named token (deleted)
+  // Get all tokens, should fail cause we authed with a api token
   //
   .get('/users/charlie/tokens')
-    .expect(200)
-    .expect('give filtered tokens for user', function (err, res, body) {
-      var result = JSON.parse(body); 
-      assert.isObject(result);
-      assert.isObject(result.apiTokens);
-      assert.isString(result.apiTokens.seeded);
-      assert.isUndefined(result.apiTokens["test-token"]);
-      //
-      // We should only return our own token
-      //
-      assert.equal(Object.keys(result.apiTokens).length, 1);
-    })
+    .expect(403)
   .next()
   //
   // Maciej is a non admin user
@@ -209,22 +198,10 @@ apiEasy.describe('http-users/user/api/tokens')
     .expect(403)
   .next()
   //
-  // Add a named token should fail as we authenticated with a token
-  // We can only create tokens when we auth with username password
-  // or are admins
+  // Getting tokens when authen with a token it should also fail
   //
   .get('/users/nuno/tokens')
-    .expect(200)
-    .expect('should respond with all tokens for the user', function (err, res, body) {
-      var result = JSON.parse(body); 
-      assert.isObject(result);
-      assert.isObject(result.apiTokens);
-      assert.isString(result.apiTokens.seeded);
-      //
-      // We should only return our own token
-      //
-      assert.equal(Object.keys(result.apiTokens).length, 1);
-    })
+    .expect(403)
   .next()
   //
   // With a token we should not be able to access organizations
