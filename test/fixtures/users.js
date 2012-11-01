@@ -5,6 +5,7 @@ module.exports = [
      password: "1234",
      email: "charlie.robbins@gmail.com",
      status: "active",
+     apiTokens: {"seeded": "token123"},
      permissions: {
        "modify permissions": true,
        "modify users": true
