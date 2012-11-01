@@ -209,4 +209,10 @@ apiEasy.describe('http-users/user/api/tokens')
   .get('/organizations', {})
     .expect(403)
   .next()
+  //
+  // Should be able to get auth information has that is not protected
+  // by requiring username/password auth
+  //
+  .get('/auth')
+    .expect(200)
 ["export"](module);
