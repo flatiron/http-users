@@ -11,14 +11,17 @@ var assert  = require('assert'),
     macros  = require('../macros'),
     base64  = require('flatiron').common.base64;
 
-var port = 8080;
+var port = 8080,
+    postToken;
 
 apiEasy.describe('http-users/user/api/tokens')
   .addBatch(macros.requireStart(app))
   .addBatch(macros.seedDb(app))
   .use('localhost', port)
   .setHeader('Content-Type', 'application/json')
-  // charlie is an admin user
+  //
+  // Charlie is an admin user
+  //
   .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
   .put('/users/charlie/tokens/test-token', {})
     .expect(201)
@@ -28,15 +31,41 @@ apiEasy.describe('http-users/user/api/tokens')
       assert.isString(result["test-token"]);
     })
   .next()
+  .post('/users/charlie/tokens', {})
+    .expect(201)
+    .expect("should return the token that was created", function (err, r, b){
+      var result = JSON.parse(b);
+      assert.isObject(result);
+      for (var key in result) {
+        postToken = key;
+        break;
+      }
+      assert.isString(postToken);
+    })
+  .next()
+  .del('/users/charlie/tokens/test-token')
+    .expect(201)
+    .expect("should delete the token", function (err, r, b){
+      var result = JSON.parse(b);
+      assert.isObject(result);
+      assert.ok(result.ok);
+      assert.equal(result.id, "test-token");
+    })
+  .next()
   .get('/users/charlie/tokens')
     .expect(200)
     .expect('should respond with all tokens for the user', function (err, res, body) {
       var result = JSON.parse(body); 
       assert.isObject(result);
       assert.isObject(result.apiTokens);
+      assert.isString(result.apiTokens[postToken]);
+      assert.isString(result.apiTokens.seeded);
+      assert.isUndefined(result.apiTokens["test-token"]);
     })
   .next()
-  // maciej is a non admin user
+  //
+  // Maciej is a non admin user
+  //
   .setHeader('Authorization', 'Basic ' + base64.encode('maciej:1234'))
   .get('/users/maciej/tokens')
     .expect(200)
