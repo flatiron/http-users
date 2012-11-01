@@ -143,7 +143,7 @@ module.exports = function (suite, app) {
         "should respond with all users": function (err, users) {
           assert.isNull(err);
           assert.isArray(users);
-          assert.lengthOf(users, 10);
+          assert.lengthOf(users, 11);
         }
       }
     }

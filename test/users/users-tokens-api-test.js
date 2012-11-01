@@ -21,9 +21,9 @@ apiEasy.describe('http-users/user/api/tokens')
   .setHeader('Content-Type', 'application/json')
   //
   // Charlie is an admin user
-  // Using a seeded api token for auth
+  // Using username password for auth
   //
-  .setHeader('Authorization', 'Basic ' + base64.encode('charlie:token123'))
+  .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
   //
   // Add a named token
   //
@@ -35,6 +35,12 @@ apiEasy.describe('http-users/user/api/tokens')
       assert.isString(result["test-token"]);
       assert.equal(result.operation, "insert");
     })
+  .next()
+  //
+  // Normal users cant do this, charlie can cause he is a admin
+  //
+  .get('/users/charlie')
+  .expect(200)
   .next()
   //
   // Update named token
@@ -92,6 +98,64 @@ apiEasy.describe('http-users/user/api/tokens')
     })
   .next()
   //
+  // Charlie is an admin user
+  // Using token for auth
+  //
+  .setHeader('Authorization', 'Basic ' + base64.encode('charlie:token123'))
+  //
+  // Add a named token
+  //
+  .put('/users/charlie/tokens/test-token', {})
+    .expect(403)
+  .next()
+  //
+  // Normal users cant do this, charlie can cause he is a admin
+  //
+  .get('/users/charlie')
+    .expect(403)
+  .next()
+  //
+  // Update named token
+  //
+  .put('/users/charlie/tokens/test-token', {})
+    .expect(403)
+  .next()
+  //
+  // Create an unnamed token
+  //
+  .post('/users/charlie/tokens', {})
+    .expect(403)
+  .next()
+  //
+  // Delete our named token
+  //
+  .del('/users/charlie/tokens/test-token')
+    .expect(403)
+  .next()
+  //
+  // Delete our seeded token
+  //
+  .del('/users/charlie/tokens/seeded')
+    .expect(403)
+  .next()
+  //
+  // Get all tokens, should not include named token (deleted)
+  //
+  .get('/users/charlie/tokens')
+    .expect(200)
+    .expect('give filtered tokens for user', function (err, res, body) {
+      var result = JSON.parse(body); 
+      assert.isObject(result);
+      assert.isObject(result.apiTokens);
+      assert.isString(result.apiTokens.seeded);
+      assert.isUndefined(result.apiTokens["test-token"]);
+      //
+      // We should only return our own token
+      //
+      assert.equal(Object.keys(result.apiTokens).length, 1);
+    })
+  .next()
+  //
   // Maciej is a non admin user
   //
   .setHeader('Authorization', 'Basic ' + base64.encode('maciej:1234'))
@@ -115,4 +179,51 @@ apiEasy.describe('http-users/user/api/tokens')
       assert.isNull(err);
       assert.equal(body.trim(), "Not authorized to modify users");
     })
+  .next()
+  //
+  // Nuno is a non admin user
+  // authenticating with a api token
+  //
+  .setHeader('Authorization', 'Basic ' + base64.encode('nuno:token123'))
+  //
+  // We shouldnt be able to access nuno's info with just a token
+  // used as auth. All we can do on the user is add and remove tokens
+  //
+  // Tokens are for apps, not for users
+  //
+  .get('/users/nuno')
+    .expect(403)
+  .next()
+  //
+  // Add a named token should fail as we authenticated with a token
+  // We can only create tokens when we auth with username password
+  // or are admins
+  //
+  .put('/users/nuno/tokens/test-token', {})
+    .expect(403)
+  .next()
+  //
+  // Even modifing the token we are using should fail
+  //
+  .put('/users/nuno/tokens/seeded', {})
+    .expect(403)
+  .next()
+  //
+  // Add a named token should fail as we authenticated with a token
+  // We can only create tokens when we auth with username password
+  // or are admins
+  //
+  .get('/users/nuno/tokens')
+    .expect(200)
+    .expect('should respond with all tokens for the user', function (err, res, body) {
+      var result = JSON.parse(body); 
+      assert.isObject(result);
+      assert.isObject(result.apiTokens);
+      assert.isString(result.apiTokens.seeded);
+      //
+      // We should only return our own token
+      //
+      assert.equal(Object.keys(result.apiTokens).length, 1);
+    })
+  .next()
 ["export"](module);
