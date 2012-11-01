@@ -32,13 +32,20 @@ apiEasy.describe('http-users/user/api/tokens')
       var result = JSON.parse(b);
       assert.isObject(result);
       assert.isString(result["test-token"]);
+      assert.equal(result.operation, "insert");
     })
   .next()
   //
-  // Token already exists
+  // Update named token
   //
   .put('/users/charlie/tokens/test-token', {})
-    .expect(500)
+    .expect(201)
+    .expect("should return the token that was created", function (err, r, b){
+      var result = JSON.parse(b);
+      assert.isObject(result);
+      assert.isString(result["test-token"]);
+      assert.equal(result.operation, "update");
+    })
   .next()
   //
   // Create an unnamed token
@@ -49,8 +56,10 @@ apiEasy.describe('http-users/user/api/tokens')
       var result = JSON.parse(b);
       assert.isObject(result);
       for (var key in result) {
-        postToken = key;
-        break;
+        if(key !== "operation") {
+          postToken = key;
+          break;
+        }
       }
       assert.isString(postToken);
     })
