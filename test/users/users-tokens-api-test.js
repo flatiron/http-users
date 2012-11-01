@@ -23,6 +23,9 @@ apiEasy.describe('http-users/user/api/tokens')
   // Charlie is an admin user
   //
   .setHeader('Authorization', 'Basic ' + base64.encode('charlie:1234'))
+  //
+  // Add a named token
+  //
   .put('/users/charlie/tokens/test-token', {})
     .expect(201)
     .expect("should return the token that was created", function (err, r, b){
@@ -31,6 +34,15 @@ apiEasy.describe('http-users/user/api/tokens')
       assert.isString(result["test-token"]);
     })
   .next()
+  //
+  // Token already exists
+  //
+  .put('/users/charlie/tokens/test-token', {})
+    .expect(500)
+  .next()
+  //
+  // Create an unnamed token
+  //
   .post('/users/charlie/tokens', {})
     .expect(201)
     .expect("should return the token that was created", function (err, r, b){
@@ -43,6 +55,9 @@ apiEasy.describe('http-users/user/api/tokens')
       assert.isString(postToken);
     })
   .next()
+  //
+  // Delete our named token
+  //
   .del('/users/charlie/tokens/test-token')
     .expect(201)
     .expect("should delete the token", function (err, r, b){
@@ -52,6 +67,9 @@ apiEasy.describe('http-users/user/api/tokens')
       assert.equal(result.id, "test-token");
     })
   .next()
+  //
+  // Get all tokens, should not include named token (deleted)
+  //
   .get('/users/charlie/tokens')
     .expect(200)
     .expect('should respond with all tokens for the user', function (err, res, body) {
@@ -67,6 +85,9 @@ apiEasy.describe('http-users/user/api/tokens')
   // Maciej is a non admin user
   //
   .setHeader('Authorization', 'Basic ' + base64.encode('maciej:1234'))
+  //
+  // Get his own tokens
+  //
   .get('/users/maciej/tokens')
     .expect(200)
     .expect('should respond with all tokens for the user', function (err, res, body) {
@@ -75,6 +96,9 @@ apiEasy.describe('http-users/user/api/tokens')
       assert.isObject(result.apiTokens);
     })
   .next()
+  //
+  // Shouldnt be able to get eli's tokens
+  //
   .get('/users/elijah/tokens')
     .expect(403)
     .expect('should not have permissions to see other tokens', function (err, res, body) {
