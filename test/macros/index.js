@@ -155,7 +155,7 @@ macros.isValidRestrictedUser = function (err, r, b) {
   assert.isUndefined(result.user.password);
   assert.isUndefined(result.user.salt);
   assert.isArray(result.user.apiTokens);
-  assert.isArray(result.user.vendorTokens);
+  assert.isArray(result.user.thirdPartyTokens);
 };
 
 macros.isValidRestrictedTokens = function (err, res, body) {
