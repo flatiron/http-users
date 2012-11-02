@@ -109,10 +109,12 @@ apiEasy.describe('http-users/user/api/tokens')
     .expect(403)
   .next()
   //
-  // Normal users cant do this, charlie can cause he is a admin
+  // Get with a token should return but no fancy stuff
   //
-  .get('/users/charlie')
-    .expect(403)
+  .get('/users/me')
+    .expect(200)
+    .expect("should return the user without sensitive stuff",
+      macros.isValidRestrictedUser)
   .next()
   //
   // Update named token
@@ -139,13 +141,16 @@ apiEasy.describe('http-users/user/api/tokens')
     .expect(403)
   .next()
   //
-  // Get all tokens, should fail cause we authed with a api token
+  // Get all tokens, should only return the one you authed with
   //
   .get('/users/charlie/tokens')
-    .expect(403)
+    .expect(200)
+    .expect('should respond with the current token', 
+      macros.isValidRestrictedTokens)
   .next()
   //
   // Maciej is a non admin user
+  // Username pass auth
   //
   .setHeader('Authorization', 'Basic ' + base64.encode('maciej:1234'))
   //
@@ -181,7 +186,9 @@ apiEasy.describe('http-users/user/api/tokens')
   // Tokens are for apps, not for users
   //
   .get('/users/nuno')
-    .expect(403)
+    .expect(200)
+    .expect("should return the user without sensitive stuff",
+      macros.isValidRestrictedUser)
   .next()
   //
   // Add a named token should fail as we authenticated with a token
@@ -201,12 +208,20 @@ apiEasy.describe('http-users/user/api/tokens')
   // Getting tokens when authen with a token it should also fail
   //
   .get('/users/nuno/tokens')
-    .expect(403)
+    .expect(200)
+    .expect('should respond with the current token', 
+      macros.isValidRestrictedTokens)
   .next()
   //
-  // With a token we should not be able to access organizations
+  // We should be able to get resources
   //
   .get('/organizations', {})
+    .expect(200)
+  .next()
+  //
+  // But not modify them
+  //
+  .put('/organizations/newsauce', {})
     .expect(403)
   .next()
   //
