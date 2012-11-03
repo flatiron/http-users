@@ -236,4 +236,39 @@ apiEasy.describe('http-users/user/api/thirdparty')
       assert.equal(dinoTokens.length, 1);
     })
   .next()
+  .get('/users/charlie/thirdparty/app/dinosaur?provider=twitter')
+    .expect(200)
+    .expect("should return all dinosaur and * tokens", function (err, r, b) {
+      var result = JSON.parse(b);
+      //
+      // Only one has the provider `twitter`
+      //
+      assert.equal(result.length, 1);
+
+      //
+      // Providers should be twitter
+      //
+      var rightProviders = result.filter(function (t) {
+        return t.provider === "twitter";
+      });
+      assert.equal(rightProviders.length, result.length);
+
+      //
+      // Wildcarded tokens should be out, cause we asked for a specific
+      // provider
+      //
+      var wildcardedTokens = result.filter(function (t) {
+        return t.app === "*";
+      });
+      assert.equal(wildcardedTokens.length, 0);
+
+      //
+      // One app specific token exists, cause it was twitter
+      //
+      var dinoTokens = result.filter(function (t) {
+        return t.app === "dinosaur";
+      });
+      assert.equal(dinoTokens.length, 1);
+    })
+  .next()
 ["export"](module);
