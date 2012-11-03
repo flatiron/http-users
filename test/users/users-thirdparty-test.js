@@ -93,7 +93,7 @@ apiEasy.describe('http-users/user/api/tokens')
       }
     })
     .expect(201)
-    .expect("should return the token that was created", function (err, r, b){
+    .expect("should return the token that was created", function (err, r, b) {
       var result = JSON.parse(b);
       console.log("will fail3", result);
       assert.isObject(result);
