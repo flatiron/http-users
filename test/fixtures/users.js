@@ -13,6 +13,15 @@ module.exports = [
   },
   {
      resource: "User",
+     username: "nuno",
+     password: "fuuuuuuuumeme",
+     email: "nuno@nodejatsu.com",
+     status: "active",
+     apiTokens: {"seeded": "token123"},
+     permissions: {}
+  },
+  {
+     resource: "User",
      username: "marak",
      password: "1234",
      email: "marak.squires@gmail.com",

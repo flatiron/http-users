@@ -38,7 +38,7 @@ macros.requireStop = function (app) {
         assert.ok(true);
       }
     }
-  }
+  };
 };
 
 macros.destroyDb = function (app) {
@@ -46,7 +46,7 @@ macros.destroyDb = function (app) {
     "Setting up the tests": {
       "clearing the couch database": {
         topic: function () {
-          nano.db.destroy(app.config.get('resourceful:database'), this.callback)
+          nano.db.destroy(app.config.get('resourceful:database'), this.callback);
         },
         "should not throw": function (err, result) {
           assert(true);
@@ -61,7 +61,7 @@ macros.createDb = function (app) {
     "Setting up the tests": {
       "creating the couch database": {
         topic: function () {
-          nano.db.create(app.config.get('resourceful:database'), this.callback)
+          nano.db.create(app.config.get('resourceful:database'), this.callback);
         },
         "should create database": function (err, result) {
           assert.isNull(err);
@@ -144,7 +144,25 @@ macros.seedDb = function (app, options) {
         }
       }
     }
-  }
+  };
+};
+
+macros.isValidRestrictedUser = function (err, r, b) {
+  var result = JSON.parse(b);
+  assert.isObject(result);
+  assert.isObject(result.user);
+  assert.isString(result.user.username);
+  assert.isUndefined(result.user.password);
+  assert.isUndefined(result.user.salt);
+  assert.isArray(result.user.apiTokens);
+  assert.isArray(result.user.thirdPartyTokens);
+};
+
+macros.isValidRestrictedTokens = function (err, res, body) {
+  var result = JSON.parse(body); 
+  assert.isObject(result);
+  assert.isObject(result.apiTokens);
+  assert.equal(Object.keys(result.apiTokens).length, 1);
 };
 
 macros.resources = {
