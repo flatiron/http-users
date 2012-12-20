@@ -271,4 +271,11 @@ apiEasy.describe('http-users/user/api/thirdparty')
       assert.equal(dinoTokens.length, 1);
     })
   .next()
+  //
+  // Charlie is an admin user
+  // Using token for auth
+  //
+  .setHeader('Authorization', 'Basic ' + base64.encode('charlie:token123'))
+  .get('/users/charlie/thirdparty')
+    .expect(200)
 ["export"](module);
