@@ -18,21 +18,20 @@
     "url": "http://github.com/flatiron/http-users.git"
   },
   "peerDependencies": {
-    "flatiron": "~0.3.3",
+    "flatiron": "~0.3.4",
     "director": "~1.1.10",
-    "restful": "~0.2.1"
+    "restful": "~0.2.2"
   },
   "dependencies": {
     "basic-auth-parser": "0.0.x",
-    "director": "~1.1.0",
     "node_hash": "0.2.x",
     "node-uuid": "~1.3.3"
   },
   "devDependencies": {
     "api-easy": "~0.3.6",
-    "director": "~1.0.11",
+    "flatiron": "~0.3.4",
+    "director": "~1.1.10",
     "director-explorer": "0.0.1",
-    "flatiron": "~0.2.5",
     "nano": "*",
     "resourceful": "~0.2.1",
     "restful": "~0.2.0",
