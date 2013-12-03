@@ -19,7 +19,7 @@
   },
   "peerDependencies": {
     "flatiron": "~0.3.4",
-    "director": "~1.1.10",
+    "director": "~1.2.1",
     "restful": "~0.2.2"
   },
   "dependencies": {
