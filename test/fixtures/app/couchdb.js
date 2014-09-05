@@ -4,7 +4,7 @@
  * (C) 2010, Nodejitsu Inc.
  *
  */
- 
+
 var director = require('director'),
     de = require('director-explorer'),
     flatiron = require('flatiron'),
@@ -65,6 +65,7 @@ app.use(flatiron.plugins.http, {
 
 app.use(flatiron.plugins.resourceful, {
   engine: 'couchdb',
+  auth: process.env.AUTH,
   database: 'flatiron-http-users',
   host: 'localhost',
   port: 5984

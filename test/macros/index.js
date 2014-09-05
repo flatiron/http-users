@@ -10,7 +10,8 @@ var assert = require('assert'),
 //
 // Use nano to help bootstrap couch for testing
 //
-var nano = require('nano')('http://localhost:5984');
+var auth = process.env.AUTH || '',
+    nano = require('nano')('http://' + (auth ? auth + '@': auth) + 'localhost:5984');
 
 var macros = exports;
 
@@ -159,7 +160,7 @@ macros.isValidRestrictedUser = function (err, r, b) {
 };
 
 macros.isValidRestrictedTokens = function (err, res, body) {
-  var result = JSON.parse(body); 
+  var result = JSON.parse(body);
   assert.isObject(result);
   assert.isObject(result.apiTokens);
   assert.equal(Object.keys(result.apiTokens).length, 1);
