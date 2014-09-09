@@ -71,7 +71,18 @@ app.use(flatiron.plugins.resourceful, {
   port: 5984
 });
 
-app.use(httpUsers);
+//
+// Register a before middleware hook with the users resource.
+//
+app.use(httpUsers, {
+  user: {
+    before: {
+      create: function resourceMiddleware(user, next) {
+        next();
+      }
+    }
+  }
+});
 
 //
 // This will expose all resources as restful routers

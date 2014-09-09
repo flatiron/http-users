@@ -186,5 +186,50 @@ module.exports = function (suite, app) {
         }
       }
     }
+  }).addBatch({
+    'The User resource': {
+      'can have middleware that': {
+        topic: function topic() {
+          app.resources.User.create({
+            _id: 'swaagie',
+            password: '1234',
+            email: 'nuno@nodejatsu.com'
+          }, this.callback);
+        },
+        'is ran on each create request': function run(err, result) {
+          assert.isNull(err);
+          assert.isObject(result);
+          assert.isArray(app.resources.User.hooks.before.create);
+          assert.equal(app.resources.User.hooks.before.create.length, 2);
+          app.resources.User.hooks.before.create.forEach(function check(fn) {
+            assert.isFunction(fn);
+          });
+        }
+      },
+      'can have middleware that': {
+        topic: function topic() {
+          //
+          // Push in middleware hook
+          //
+          app.resources.User.hooks.before.create.push(function checkEmail(user, next) {
+            if (user.email === 'nuno@nodejatsu.com') {
+              return next(new Error('Duplicate email'))
+            }
+          });
+
+          app.resources.User.create({
+            _id: 'swaagie',
+            password: '1234',
+            email: 'nuno@nodejatsu.com'
+          }, this.callback);
+        },
+        'can invalidate requests on specific keys': function run(err, result) {
+          assert.isObject(err);
+
+          assert.equal(app.resources.User.hooks.before.create.length, 3);
+          assert.equal(err.message, 'Duplicate email');
+        }
+      }
+    }
   });
 };
