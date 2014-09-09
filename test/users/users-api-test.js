@@ -122,6 +122,34 @@ apiEasy.describe('http-users/user/api')
     })
   .undiscuss()
   .next()
+  .discuss('and an email that is not unique')
+    .post('/users/email', { email: 'nuno@nodejatsu.com' })
+    .expect(200)
+    .expect('should respond with not unique', function (err, res, body) {
+      var result = JSON.parse(body);
+      assert.isNull(err);
+      assert.equal(result.unique, false);
+    })
+  .undiscuss()
+  .discuss('and an email that is missing')
+    .post('/users/email', {})
+    .expect(500)
+    .expect('should respond with 500 and not unique', function (err, res, body) {
+      var result = JSON.parse(body);
+      assert.isNull(err);
+      assert.equal(result.unique, false);
+    })
+  .undiscuss()
+  .discuss('and an email that is unique')
+    .post('/users/email', { email: 'unregistered@nodejitsu.com' })
+    .expect(200)
+    .expect('should respond with unique', function (err, res, body) {
+      var result = JSON.parse(body);
+      assert.isNull(err);
+      assert.equal(result.unique, true);
+    })
+  .undiscuss()
+  .next()
   .discuss('and a valid username')
     .post('/users/silly-user', {
       shake: '0123456789',
