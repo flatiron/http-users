@@ -1,6 +1,6 @@
 {
   "name": "flatiron-http-users",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Encapsulated routes and resources for managing users in flatiron HTTP apps",
   "author": "Nodejitsu Inc <info@nodejitsu.com>",
   "contributors": [
