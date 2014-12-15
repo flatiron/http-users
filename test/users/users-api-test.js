@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * users-api-test.js: Tests for the RESTful users API.
  *
@@ -60,15 +62,14 @@ apiEasy.describe('http-users/user/api')
       assert.isObject(result);
       assert.isObject(result.user);
       assert.equal(result.user.username, 'devjitsu');
-      assert.isString(result.user.inviteCode)
+      assert.isString(result.user.inviteCode);
     })
   .get('/users/noob')
     .expect(404)
   .put('/users/devjitsu', { email: 'working@test.com', password: 'test' })
     .expect(200)
-    .expect('should respond with the user', function (err, res, result)  {
-      var result = JSON.parse(result);
-
+    .expect('should respond with the user', function (err, res, body)  {
+      var result = JSON.parse(body);
       assert.isNull(err);
       assert.isObject(result);
       assert.equal(result.email, 'working@test.com');
