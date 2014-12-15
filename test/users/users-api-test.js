@@ -36,6 +36,15 @@ apiEasy.describe('http-users/user/api')
       assert.isObject(result);
       assert.equal('devjitsu', result.username);
     })
+  .post('/users/invalid@characters-in.username', { email: 'initial@email.com', password: '1234' })
+    .expect(500)
+    .expect('should respond with error', function (err, res, body) {
+      var result = JSON.parse(body);
+      assert.isNull(err);
+      assert.isArray(result);
+      assert.equal(result[0].message, 'invalid input');
+      assert.equal(result[0].property, 'username');
+    })
   .post('/users/MixEDCasE', { email: 'initial@email.com', password: '1234' })
     .expect(201)
     .expect('should respond with a lowercase username', function (err, res, body) {
