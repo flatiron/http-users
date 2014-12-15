@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * users-api-test.js: Tests for the RESTful users API.
  *
@@ -34,6 +36,15 @@ apiEasy.describe('http-users/user/api')
       assert.isObject(result);
       assert.equal('devjitsu', result.username);
     })
+  .post('/users/invalid@characters-in.username', { email: 'initial@email.com', password: '1234' })
+    .expect(500)
+    .expect('should respond with error', function (err, res, body) {
+      var result = JSON.parse(body);
+      assert.isNull(err);
+      assert.isArray(result);
+      assert.equal(result[0].message, 'invalid input');
+      assert.equal(result[0].property, 'username');
+    })
   .post('/users/MixEDCasE', { email: 'initial@email.com', password: '1234' })
     .expect(201)
     .expect('should respond with a lowercase username', function (err, res, body) {
@@ -60,12 +71,19 @@ apiEasy.describe('http-users/user/api')
       assert.isObject(result);
       assert.isObject(result.user);
       assert.equal(result.user.username, 'devjitsu');
-      assert.isString(result.user.inviteCode)
+      assert.isString(result.user.inviteCode);
     })
   .get('/users/noob')
     .expect(404)
-  .put('/users/devjitsu', { email: 'working@test.com' })
-    .expect(204)
+  .put('/users/devjitsu', { email: 'working@test.com', password: 'test' })
+    .expect(200)
+    .expect('should respond with the user', function (err, res, body)  {
+      var result = JSON.parse(body);
+      assert.isNull(err);
+      assert.isObject(result);
+      assert.equal(result.email, 'working@test.com');
+      assert.equal(result.password, undefined);
+    })
   .next()
   .get('/users/devjitsu')
     .expect(200)
@@ -123,30 +141,30 @@ apiEasy.describe('http-users/user/api')
   .undiscuss()
   .next()
   .discuss('and an email that is not unique')
-    .post('/users/email', { email: 'nuno@nodejatsu.com' })
+    .post('/users/email/taken', { email: 'nuno@nodejatsu.com' })
     .expect(200)
-    .expect('should respond with not unique', function (err, res, body) {
+    .expect('should respond with taken', function (err, res, body) {
       var result = JSON.parse(body);
       assert.isNull(err);
-      assert.equal(result.unique, false);
+      assert.equal(result.taken, true);
     })
   .undiscuss()
   .discuss('and an email that is missing')
-    .post('/users/email', {})
+    .post('/users/email/taken', {})
     .expect(500)
-    .expect('should respond with 500 and not unique', function (err, res, body) {
+    .expect('should respond with 500 and an error', function (err, res, body) {
       var result = JSON.parse(body);
       assert.isNull(err);
-      assert.equal(result.unique, false);
+      assert.equal(result.error, 'Please provide an email address');
     })
   .undiscuss()
   .discuss('and an email that is unique')
-    .post('/users/email', { email: 'unregistered@nodejitsu.com' })
+    .post('/users/email/taken', { email: 'unregistered@nodejitsu.com' })
     .expect(200)
-    .expect('should respond with unique', function (err, res, body) {
+    .expect('should respond with not taken', function (err, res, body) {
       var result = JSON.parse(body);
       assert.isNull(err);
-      assert.equal(result.unique, true);
+      assert.equal(result.taken, false);
     })
   .undiscuss()
   .next()
@@ -204,7 +222,7 @@ apiEasy.describe('http-users/user/api')
         'modify users': true
       }
     })
-    .expect(204)
+    .expect(200)
   .next()
   .get('/users/marak')
   .expect('should not add the permissions to the user', function (err, res, body) {
