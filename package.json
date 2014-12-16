@@ -31,7 +31,6 @@
     "api-easy": "~0.3.6",
     "flatiron": "~0.4.3",
     "director": "~1.2.1",
-    "director-explorer": "0.0.1",
     "nano": "*",
     "resourceful": "~0.2.1",
     "restful": "~0.2.2",

@@ -6,7 +6,6 @@
  */
 
 var director = require('director'),
-    de = require('director-explorer'),
     flatiron = require('flatiron'),
     restful  = require('restful'),
     httpUsers = require('../../../lib/http-users');
@@ -90,7 +89,6 @@ app.use(httpUsers, {
 app.use(restful);
 
 app.router.get('/', function () {
-  this.res.text(de.table(app.router.routes));
   this.res.end();
 });
 
