@@ -1,6 +1,6 @@
 {
   "name": "flatiron-http-users",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Encapsulated routes and resources for managing users in flatiron HTTP apps",
   "author": "Nodejitsu Inc <info@nodejitsu.com>",
   "contributors": [
@@ -19,7 +19,7 @@
   },
   "peerDependencies": {
     "flatiron": "0.x.x",
-    "director": "~1.2.1",
+    "director": "1.2.x",
     "restful": "~0.2.2"
   },
   "dependencies": {
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "api-easy": "~0.3.6",
-    "flatiron": "~0.3.4",
+    "flatiron": "~0.4.3",
     "director": "~1.2.1",
     "director-explorer": "0.0.1",
     "nano": "*",
