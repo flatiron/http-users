@@ -88,10 +88,6 @@ app.use(httpUsers, {
 //
 app.use(restful);
 
-app.router.get('/', function () {
-  this.res.end();
-});
-
 if (!module.parent) {
   app.start(8080);
 }
